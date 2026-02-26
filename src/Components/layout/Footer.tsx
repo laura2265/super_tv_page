@@ -1,0 +1,57 @@
+function Footer(){
+    return(
+        <footer className="footer" id="footer" role="contentinfo">
+            <div className="footer-wrap">
+              <div className="footer-top">
+
+                <div className="footer-col">
+                  <h3>Contacto y servicios</h3>
+                  <nav className="footer-links" aria-label="Contacto y servicios">
+                    <a href="#">PQRs</a>
+                    <a href="#">Planes</a>
+                    <a href="./components/Nosotros.html">Nosotros</a>
+                  </nav>
+
+                  <a className="footer-btn" href="#">Consulta cobertura</a>
+                </div>
+
+                <div className="footer-col">
+                  <h3>Términos y condiciones</h3>
+                  <nav className="footer-links" aria-label="Legales">
+                    <a href="#">Políticas de privacidad</a>
+                    <a href="#">Términos y condiciones del sitio web</a>
+                    <a href="#">Términos y condiciones del servicio de internet prepago</a>
+                  </nav>
+                </div>
+
+                <div className="footer-col">
+                  <h3>Redes sociales</h3>
+
+                  <div className="footer-social" aria-label="Redes sociales">
+                    <a className="social" href="#" aria-label="WhatsApp"><i className="bi bi-whatsapp"></i></a>
+                    <a className="social" href="#" aria-label="Facebook"><i className="bi bi-facebook"></i></a>
+                    <a className="social" href="#" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
+                    <a className="social" href="#" aria-label="Telegram"><i className="bi bi-telegram"></i></a>
+                  </div>
+
+                  <p className="footer-note">Soporte y atención cercana para nuestros usuarios.</p>
+                </div>
+
+              </div>
+
+              <div className="footer-divider"></div>
+
+              <div className="footer-bottom">
+                <div className="footer-brand">
+                  <strong>SUPER TV ELECTRONIC S.A.S</strong>
+                  <span>Conectando hogares desde 2010</span>
+                </div>
+
+                <p className="footer-copy">© Copyright - 2026 Colombia</p>
+              </div>
+            </div>
+        </footer>
+    )
+}
+
+export default Footer
