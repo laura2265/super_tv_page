@@ -7,12 +7,12 @@ function Footer(){
                 <div className="footer-col">
                   <h3>Contacto y servicios</h3>
                   <nav className="footer-links" aria-label="Contacto y servicios">
-                    <a href="#">PQRs</a>
-                    <a href="#">Planes</a>
-                    <a href="./components/Nosotros.html">Nosotros</a>
+                    <a href="/contacto">PQRs</a>
+                    <a href="/planes">Planes</a>
+                    <a href="/nosotros">Nosotros</a>
                   </nav>
 
-                  <a className="footer-btn" href="#">Consulta cobertura</a>
+                  <a className="footer-btn" href="/cobertura">Consulta cobertura</a>
                 </div>
 
                 <div className="footer-col">
@@ -28,9 +28,9 @@ function Footer(){
                   <h3>Redes sociales</h3>
 
                   <div className="footer-social" aria-label="Redes sociales">
-                    <a className="social" href="#" aria-label="WhatsApp"><i className="bi bi-whatsapp"></i></a>
-                    <a className="social" href="#" aria-label="Facebook"><i className="bi bi-facebook"></i></a>
-                    <a className="social" href="#" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
+                    <a className="social" href="https://www.whatsapp.com/channel/0029VZzZKxj002T4mnqPpj3V" aria-label="WhatsApp"><i className="bi bi-whatsapp"></i></a>
+                    <a className="social" href="https://www.facebook.com/Cablemasbogota" aria-label="Facebook"><i className="bi bi-facebook"></i></a>
+                    <a className="social" href="https://www.instagram.com/cablemasbogota/" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
                     <a className="social" href="#" aria-label="Telegram"><i className="bi bi-telegram"></i></a>
                   </div>
 

@@ -1,10 +1,30 @@
+import fondoIndex from "../../assets/Img/fondoIndx.png"
+import imagenPromo from "../../assets/Img/Promos/Promos.png"
+import imgClabemas from "../../assets/Img/logo_cablemas.png"
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useEffect } from "react";
+import useHomeEffect from "../../assets/hooks/useHomeEffects";
+
 function HomePage(){
+  useHomeEffect();
+  useEffect(() => {
+    const elements = Array.from(document.querySelectorAll<HTMLElement>(".reveal-left"));
+    elements.forEach((el, index) => {
+      setTimeout(() => el.classList.add("active"), index * 150);
+    });
+
+    return () => {
+      elements.forEach((el) => el.classList.remove("active"));
+    };
+  }, []);
+
+    
     return(
         <>
                 
             <section className="planes-promo" aria-label="Promoción de planes">
               <div className="planes-promo__bg">
-                <img id="heroBg" className="planes-promo__img" src="./IMG/fondoIndx.png" alt="Fibra óptica"/>
+                <img id="heroBg" className="planes-promo__img" src={fondoIndex} alt="Fibra óptica"/>
                 <div className="planes-promo__overlay"></div>
               </div>
             
@@ -24,7 +44,7 @@ function HomePage(){
                   </p>
                 
                   <div className="planes-promo__cta">
-                    <a className="planes-promo__btn planes-promo__btn--primary" href="./components/Planes.html">
+                    <a className="planes-promo__btn planes-promo__btn--primary" href="/planes">
                       Ver planes <i className="bi bi-arrow-right"></i>
                     </a>
                   
@@ -43,14 +63,14 @@ function HomePage(){
             
             
             <section className="quick-actions">
-              <div className="container reveal-left">   
+              <div className="container">   
             
                 <div className="row quick-actions-grid">
             
-                  <div className="col-sm-6 col-md-3 wow fadeInUp">
-                    <a className="quick-card quick-card-primary reveal-left" href="./components/Planes.html">
+                  <div className="col-sm-6 col-md-3  ">
+                    <a className="quick-card quick-card-primary reveal-left" href="/planes">
                       <div className="quick-icon">
-                        <i className="fa-solid fa-wifi"></i>
+                        <i className="bi bi-wifi"></i>
                       </div>
                       <div className="quick-content">
                         <h4>Planes</h4>
@@ -60,10 +80,10 @@ function HomePage(){
                     </a>
                   </div>
             
-                  <div className="col-sm-6 col-md-3 wow fadeInUp" data-wow-delay="0.1s">
-                    <a className="quick-card reveal-left" href="./components/Cobertura.html">
+                  <div className="col-sm-6 col-md-3 " >
+                    <a className="quick-card reveal-left" href="/cobertura">
                       <div className="quick-icon">
-                        <i className="fa-solid fa-location-dot"></i>
+                        <i className="bi bi-geo-alt-fill"></i>
                       </div>
                       <div className="quick-content">
                         <h4>Cobertura</h4>
@@ -73,10 +93,10 @@ function HomePage(){
                     </a>
                   </div>
             
-                  <div className="col-sm-6 col-md-3 wow fadeInUp" data-wow-delay="0.2s">
-                    <a className="quick-card reveal-left" href="./components/Contacto.html">
+                  <div className="col-sm-6 col-md-3" >
+                    <a className="quick-card reveal-left" href="/contacto">
                       <div className="quick-icon">
-                        <i className="fa-solid fa-headset"></i>
+                        <i className="bi bi-headset"></i>
                       </div>
                       <div className="quick-content">
                         <h4>Soporte</h4>
@@ -86,10 +106,10 @@ function HomePage(){
                     </a>
                   </div>
             
-                  <div className="col-sm-6 col-md-3 wow fadeInUp" data-wow-delay="0.3s">
-                    <a className="quick-card  reveal-left" href="Paga_tu_factura.html">
+                  <div className="col-sm-6 col-md-3" >
+                    <a className="quick-card  reveal-left" href="https://clientes.portalinternet.net/saldo/super-tv/">
                       <div className="quick-icon">
-                        <i className="fa-solid fa-receipt"></i>
+                        <i className="bi bi-receipt"></i>
                       </div>
                       <div className="quick-content">
                         <h4>Paga tu factura</h4>
@@ -113,19 +133,19 @@ function HomePage(){
                 <article className="tile tile--slider reveal" aria-label="Promociones">
                   <div className="slider" data-slider>
             
-                    4<div className="slider-overlay"></div>
+                    <div className="slider-overlay"></div>
                   
                     <div className="slider__track">
-                      <a className="slide is-active" href="./components/Planes.html">
-                        <img src="./IMG/promos/Promos.png" alt="Promo Internet + TV 100 Megas por 1 año" />
+                      <a className="slide is-active" href="/planes">
+                        <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
                       </a>
                     
-                      <a className="slide is-active" href="./components/Cobertura.html">
-                        <img src="./IMG/promos/Promos.png" alt="Promo Internet + TV 100 Megas por 1 año" />
+                      <a className="slide is-active" href="/cobertura">
+                        <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
                       </a>
                     
-                      <a className="slide is-active" href="./components/Contacto.html">
-                        <img src="./IMG/promos/Promos.png" alt="Promo Internet + TV 100 Megas por 1 año" />
+                      <a className="slide is-active" href="/contacto">
+                        <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
                       </a>
                     </div>
                   
@@ -143,7 +163,7 @@ function HomePage(){
             
                   <article className="service-card">
                     <div className="service-icon">
-                      <i className="fas fa-wifi"></i>
+                      <i className="bi bi-wifi"></i>
                     </div>
                     <div className="contentTextInfo">
                       <h3>Internet</h3>
@@ -154,7 +174,7 @@ function HomePage(){
                 
                   <article className="service-card">
                     <div className="service-icon">
-                      <i className="fas fa-tv"></i>
+                      <i className="bi bi-tv"></i>
                     </div>
                     <div className="contentTextInfo">
                     <h3>Ip TV</h3>
@@ -173,7 +193,7 @@ function HomePage(){
                   </article>
                   <article className="service-card">
                     <div className="service-icon">
-                      <i className="fas fa-phone"></i>
+                      <i className="bi bi-phone"></i>
                     </div>
                     <div className="contentTextInfo">
                     <h3>Wireless</h3>
@@ -183,7 +203,7 @@ function HomePage(){
             
                   <article className="service-card">
                     <div className="service-icon">
-                      <i className="fas fa-wifi"></i>
+                      <i className="bi bi-wifi"></i>
                     </div>
                     <div className="contentTextInfo">
                     <h3>Wireless</h3>
@@ -262,15 +282,14 @@ function HomePage(){
                 <div className="connectivity-cards1 ">
                   <div className="ticker">
                     <div className="ticker__track">
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
-                    
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
-                      <div className="connectivity-card1"><img src="./IMG/logo_cablemas.png"/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
                     </div>
                   </div>
                 </div>

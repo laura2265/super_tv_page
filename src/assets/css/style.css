@@ -133,6 +133,7 @@ body.is-ready footer{
 .header .barraMenu .nav{
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     margin-top: 3%;
     list-style: none;
 }
@@ -144,12 +145,15 @@ body.is-ready footer{
 }
 .header .barraMenu ul .scroll{
   padding: .5rem 0 0 0;
-  border-radius: 7px;
+  border-radius: 12px;
+  padding-bottom:5px;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 .header .barraMenu ul .scroll:hover{
-    border-bottom: 1px solid rgba(255,255,255,.9);
-    transition: 1s;
-    transform: scale(1.1);
+  border-bottom: 1px solid #fff;
+  transition: 1s;
+
 }
 /*Boton pagar factura*/
 .BotonPagarFactura {
@@ -175,13 +179,6 @@ body.is-ready footer{
 /* ===== Menu desplegable ===== */
 .navbar-nav .dropdown{
   position: relative;
-  margin-top: -2%;
-}
-.navbar-nav .dropdown-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  cursor: pointer;
 }
 
 .navbar-nav .dropdown-menu {
@@ -287,6 +284,9 @@ body.is-ready footer{
   padding: .5rem 0 ;
 }
 .header.scrolled .barraMenu ul li a{
+  padding-bottom:5px;
+  padding-left: 3px;
+  padding-right: 3px;
   color: #333;
 }
 
@@ -299,9 +299,15 @@ body.is-ready footer{
 }
 
 .header.scrolled .BotonPagarFactura a:hover{
+  padding-bottom:5px;
+  padding-left: 3px;
+  padding-right: 3px;
   color: #fff;
 }
 .header .barraMenu ul .scroll.activo{
+  padding-bottom:5px;
+  padding-left: 3px;
+  padding-right: 3px;
   border-bottom: 1px solid transparent;
   border-bottom-color: rgb(255, 255, 255);
 }
@@ -558,7 +564,7 @@ body.is-ready footer{
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 12px 10px 30px rgba(0, 0, 0, 0.345);
   text-decoration: none;
-  color: #111;
+  color: #010101;
   min-height: 120px;
   transition: transform .15s ease, box-shadow .15s ease;
 }
@@ -568,6 +574,9 @@ body.is-ready footer{
   box-shadow: 0 14px 40px rgba(0,0,0,.10);
 }
 
+.quick-card h4{
+  color: #1986aa;
+}
 .quick-icon{
   width: 46px;
   height: 46px;
@@ -575,8 +584,8 @@ body.is-ready footer{
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(44,143,179,.12); 
-  color: #2C8FB3;
+  background: #1986aa; 
+  color: #ffffffe1;
   font-size: 18px;
   flex: 0 0 auto;
 }
@@ -601,18 +610,20 @@ body.is-ready footer{
 }
 
 .quick-card-primary{
-  background: linear-gradient(135deg, #cb101f, #2C8FB3);
+  background: linear-gradient(135deg, #cb101f, #2C8FB3)!important;
   border: none;
 }
-
+.quick-card-primary h4{
+  color: #fff !important;
+}
 .quick-card-primary,
 .quick-card-primary .quick-content p{
   color: #fff;
 }
 
 .quick-card-primary .quick-icon{
-  background: rgba(255,255,255,.18);
-  color: #fff;
+  background: rgba(255,255,255,.18) !important;
+  color: #fff !important;
 }
 
 .quick-card-primary .quick-link{
@@ -627,14 +638,28 @@ body.is-ready footer{
   }
 }
 
+.reveal{
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .45s ease, transform .45s ease;
+}
+
 /*-------------------Estilos de animcación ------------*/
 .reveal-left{
   opacity: 0;
   transform: translateX(-80px);
+  transition: opacity .45s ease, transform .45s ease;
+  will-change: opacity, transform;
 }
 
 .reveal-left.active{
-  animation: slideFromLeft .8s cubic-bezier(.25,.8,.25,1) forwards;
+  opacity: 1;
+  transform: translateX(0); /* ✅ era X, no Y */
 }
 
 @keyframes slideFromLeft{
@@ -711,6 +736,7 @@ body.is-ready footer{
 .tile--slider{
   grid-column: span 2;
   grid-row: span 2;
+  min-height: 320px;
   padding: 0;
   background: #0b1230;
   border: 1px solid rgba(255,255,255,.10);

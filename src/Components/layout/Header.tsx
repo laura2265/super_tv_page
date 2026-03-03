@@ -1,16 +1,22 @@
 import logoSuper from "../../assets/Img/Logo_Super_negativo1.png"
+import logoSuper2 from "../../assets/Img/Logito-Empresa-Blanco.png"
+import { NavLink } from "react-router-dom";
+
 
 function Header(){
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+  `scroll ${isActive ? "activo" : ""}`;
+
     return(
         <header className="header">
-      
+
         <div className="navbar-header">
             <a className="navbar-brand" href="index.html">
                 <img 
                 className="logito2" alt="logo" 
                 src={logoSuper}
-                data-logo-top="IMG/Logo_Super_negativo1.png" 
-                data-logo-scroll="IMG/Logito-Empresa-Blanco.png"
+                data-logo-top={logoSuper} 
+                data-logo-scroll={logoSuper2}
                 />
             </a>
         </div>
@@ -19,29 +25,29 @@ function Header(){
         </button>
         <div className="barraMenu">
             <ul className="nav navbar-nav">
-            	<li className="scroll activo"><a  href="#">Inicio</a></li>
-            	<li className="scroll"><a href="./components/Planes.html">Planes </a></li>
-            	<li className="scroll"><a href="./components/Nosotros.html">Nosotros</a></li>
-            	<li className="scroll"><a href="./components/Cobertura.html">Cobertura</a></li>
-            	<li className="scroll"><a href="./components/Contacto.html">Contacto</a></li>
+              <li><NavLink className={linkClass}  to="/">Inicio</NavLink></li>
+            	<li><NavLink className={linkClass}  to="/planes">Planes </NavLink></li>
+            	<li><NavLink className={linkClass}  to="/nosotros">Nosotros</NavLink></li>
+            	<li><NavLink className={linkClass}  to="/cobertura">Cobertura</NavLink></li>
+            	<li><NavLink className={linkClass}  to="./contacto">Contacto</NavLink></li>
                 <li className="scroll dropdown">
                   <a href="#" className="dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                     Legalidad <i className="fa-solid fa-chevron-down" style={{fontSize: "12px", marginLeft: "6px",}}></i>
                   </a>
-              
+
                   <ul className="dropdown-menu">
-                    <li><a href="./components/Proteccion_consumidor.html">Protección al coonsumidor</a></li>
-                    <li><a href="./components/Proteccion_infantil.html">Protección infantil</a></li>
-                    <li><a href="./components/Proteccion_usuario.html">Protección al usuario</a></li>
-                    <li><a href="./components/protección_de_datos.html">Proteccion de datos</a></li>
-                    <li><a href="./components/Donde_denunciar.html">Dónde denunciar</a></li>
+                    <li><NavLink className={({ isActive }) => (isActive ? "activo" : "")} to="/proteccion-al-consumidor">Protección al coonsumidor</NavLink></li>
+                    <li><NavLink className={({ isActive }) => (isActive ? "activo" : "")} to="/proteccion-infantil">Protección infantil</NavLink></li>
+                    <li><NavLink className={({ isActive }) => (isActive ? "activo" : "")} to="/proteccion-al-usuario">Protección al usuario</NavLink></li>
+                    <li><NavLink className={({ isActive }) => (isActive ? "activo" : "")} to="/proteccion-de-datos">Proteccion de datos</NavLink></li>
+                    <li><NavLink className={({ isActive }) => (isActive ? "activo" : "")} to="/donde-denunciar">Dónde denunciar</NavLink></li>
                   </ul>
                 </li>
 
             </ul>
         </div>
         <div className="BotonPagarFactura">
-          <a href="https://clientes.portalinternet.net/saldo/super-tv/">Paga tu factura</a>
+          <a target="_blank" rel="noreferrer" href="https://clientes.portalinternet.net/saldo/super-tv/">Paga tu factura</a>
         </div>
     </header>
     )

@@ -1,7 +1,428 @@
 import "../../assets/css/pages/cobertura.css"
 import "../../assets/css/pages/mapa.css"
+import { TILE_URL, MAP_CENTER,MAP_ZOOM, zones, type Zone, type ZoneCoords, groups } from "../../assets/hooks/map/coverageData.js";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css"; 
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+const baseStyle: L.PathOptions = {
+  color: "#00ff6a",
+  weight: 2,
+  fillColor: "#00ff6a",
+  fillOpacity: 0.14,
+};
+
+const highlightStyle: L.PathOptions = {
+  color: "#22c7b8",
+  weight: 4,
+  fillColor: "#00ff6a",
+  fillOpacity: 0.28,
+};
+
+function toBounds(coords: ZoneCoords) {
+  const b = L.latLngBounds([]);
+  if (!coords) return b;
+
+  if (Array.isArray(coords[0]) && typeof (coords[0] as any)[0] === "number") {
+    b.extend(coords as any);
+  } else {
+    (coords as any).forEach((poly: any) => b.extend(poly));
+  }
+  return b;
+}
+
+function glowIcon({ pulse = true } = {}) {
+  const html = `<div class="glow-marker ${pulse ? "glow-pulse" : ""}"></div>`;
+  return L.divIcon({
+    className: "glow-icon",
+    html,
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
+  });
+}
 
 function CoberturaPage(){
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<L.Map | null>(null);
+
+  const [addressQuery, setAddressQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [searchResultLabel, setSearchResultLabel] = useState<string | null>(null);
+  
+  const searchMarkerRef = useRef<L.Marker | null>(null);
+  const layersByIdRef = useRef<Record<string, L.FeatureGroup | L.Polygon>>({});
+  const [openGroupId, setOpenGroupId] = useState<string>(() => groups[0]?.id ?? "");
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
+
+
+
+const toggleAndFocusGroup = useCallback((groupId: string) => {
+  setOpenGroupId((prev) => {
+    const next = prev === groupId ? "" : groupId;
+    if (next) focusGroup(groupId);   // zoom a todas las subzonas
+    return next;
+  });
+}, []);
+
+  const chipToGroupId: Record<string, string> = {
+  "Ciudad Jardín": "CIUDAD_JARDIN",   // <-- AJUSTA a tus ids reales en coverageData
+  "Paraíso": "PARAISO",
+  "San Francisco": "SAN_FRANCISCO",
+  "La Estrella": "LA_ESTRELLA",
+  "San Carlos": "SAN_CARLOS",
+};
+
+  const [visible, setVisible] = useState<Record<string, boolean>>(() => {
+    const init: Record<string, boolean> = {};
+    zones.forEach((z) => (init[z.id] = true));
+    return init;
+  });
+      
+  type NominatimResult = { lat: string; lon: string; display_name: string };
+
+  async function geocodeAddress(q: string): Promise<NominatimResult | null> {
+    const url = new URL("https://nominatim.openstreetmap.org/search");
+    url.searchParams.set("q", q);
+    url.searchParams.set("format", "jsonv2");
+    url.searchParams.set("limit", "5");
+    url.searchParams.set("addressdetails", "1");
+    url.searchParams.set("countrycodes", "co"); 
+    
+    url.searchParams.set("viewbox", "-79.1,-4.3,-66.8,13.6");
+    url.searchParams.set("bounded", "1");
+    
+    const res = await fetch(url.toString(), {
+      headers: {
+        Accept: "application/json",
+        "Accept-Language": "es",
+      },
+    });
+    if (!res.ok) return null;
+  
+    const data = (await res.json()) as NominatimResult[];
+    return data[0] ?? null;
+  }
+
+
+  const zonesById = useMemo(() => {
+    const m = new Map<string, Zone>();
+    zones.forEach((z) => m.set(z.id, z));
+    return m;
+  }, []);
+
+  const checkedCount = useMemo(() => Object.values(visible).filter(Boolean).length, [visible]);
+//hola2
+  useEffect(() => {
+    if (!mapRef.current || mapInstanceRef.current) return;
+
+    const map = L.map(mapRef.current, { zoomControl: false }).setView(MAP_CENTER, MAP_ZOOM);
+    L.tileLayer(TILE_URL, { attribution: "" }).addTo(map);
+
+    zones.forEach((z) => {
+      L.polygon(z.coords, {
+        color: "#00ff6a",
+        weight: 2,
+        fillColor: "#00ff6a",
+        fillOpacity: 0.14,
+      })
+        .bindTooltip(z.name, { sticky: true })
+        .addTo(map);
+    });
+
+    mapInstanceRef.current = map;
+
+    return () => {
+      map.remove();
+      mapInstanceRef.current = null;
+
+    };
+
+    mapInstanceRef.current = map;
+
+    return () => {
+      map.remove();
+      mapInstanceRef.current = null;
+      layersByIdRef.current = {};
+    };
+  }, []);
+
+  const ensureLayer = useCallback((zone: Zone) => {
+    const existing = layersByIdRef.current[zone.id];
+    if (existing) return existing;
+
+    let layer: L.FeatureGroup | L.Polygon;
+
+    if (Array.isArray(zone.coords[0]) && typeof (zone.coords as any)[0][0] === "number") {
+
+      layer = L.polygon(zone.coords as any, baseStyle).bindTooltip(zone.name, { sticky: true });
+    } else {
+      const fg = L.featureGroup();
+      (zone.coords as any).forEach((polyCoords: any) => {
+        L.polygon(polyCoords, baseStyle).bindTooltip(zone.name, { sticky: true }).addTo(fg);
+      });
+      layer = fg;
+    }
+
+    layersByIdRef.current[zone.id] = layer;
+    return layer;
+  }, []);
+
+  const setLayerVisible = useCallback(
+    (zoneId: string, isVisible: boolean) => {
+      const map = mapInstanceRef.current;
+      const zone = zonesById.get(zoneId);
+      if (!map || !zone) return;
+
+      const layer = ensureLayer(zone);
+
+      if (isVisible) {
+        if (!map.hasLayer(layer)) layer.addTo(map);
+        (layer as any).bringToFront?.();
+      } else {
+        if (map.hasLayer(layer)) map.removeLayer(layer);
+        if (highlightedId === zoneId) setHighlightedId(null);
+      }
+    },
+    [ensureLayer, zonesById, highlightedId]
+  );
+
+  const clearHighlight = useCallback((zoneId: string) => {
+    const layer = layersByIdRef.current[zoneId];
+    if (!layer) return;
+
+    (layer as any).setStyle?.(baseStyle);
+    (layer as any).eachLayer?.((l: any) => l.setStyle?.(baseStyle));
+  }, []);
+
+  const highlightAndFocus = useCallback(
+    (zoneId: string) => {
+      const map = mapInstanceRef.current;
+      const zone = zonesById.get(zoneId);
+      if (!map || !zone) return;
+
+      if (highlightedId && highlightedId !== zoneId) clearHighlight(highlightedId);
+
+      setVisible((prev) => ({ ...prev, [zoneId]: true }));
+      setLayerVisible(zoneId, true);
+
+      const layer = ensureLayer(zone);
+
+      (layer as any).setStyle?.(highlightStyle);
+      (layer as any).eachLayer?.((l: any) => l.setStyle?.(highlightStyle));
+
+      const bounds = (layer as any).getBounds?.() ?? toBounds(zone.coords);
+      if (bounds && bounds.isValid?.()) {
+        map.fitBounds(bounds, { padding: [30, 30] });
+      }
+
+      setHighlightedId(zoneId);
+    },
+    [zonesById, ensureLayer, setLayerVisible, highlightedId, clearHighlight]
+  );
+
+  function pointInRing(point: [number, number], ring: [number, number][]) {
+    const [py, px] = point;
+    let inside = false;
+
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [iy, ix] = ring[i];
+      const [jy, jx] = ring[j];
+
+      const intersect =
+        ix > px !== jx > px &&
+        py < ((jy - iy) * (px - ix)) / (jx - ix + 0.0) + iy;
+
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  function findZoneByPoint(point: [number, number]) {
+    for (const z of zonesById.values()) {
+      const c: any = z.coords;
+
+      const isPolygon = Array.isArray(c[0]) && typeof c[0][0] === "number";
+      if (isPolygon) {
+        if (pointInRing(point, c as [number, number][])) return z.id;
+        continue;
+      }
+
+      for (const ring of c as [number, number][][]) {
+        if (pointInRing(point, ring as any)) return z.id;
+      }
+    }
+    return null;
+  }
+
+  const onSearchAddress = useCallback(async () => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const raw = addressQuery.trim();
+    if (raw.length < 4) {
+      setSearchError("Escribe una dirección más específica.");
+      return;
+    }
+
+    setIsSearching(true);
+    setSearchError(null);
+    setSearchResultLabel(null);
+
+    try {
+      const q = normalizeColombiaQuery(raw);
+      const r = await geocodeAddress(q);
+
+      if (!r) {
+        setSearchError("No encontré resultados con esa dirección en Colombia.");
+        return;
+      }
+
+      const lat = Number(r.lat);
+      const lng = Number(r.lon);
+      const pos: [number, number] = [lat, lng];
+
+      if (!searchMarkerRef.current) {
+        searchMarkerRef.current = L.marker(pos).addTo(map);
+      } else {
+        searchMarkerRef.current.setLatLng(pos);
+      }
+
+      searchMarkerRef.current.bindPopup(r.display_name).openPopup();
+      map.flyTo(pos, 17, { duration: 1.1 });
+      setSearchResultLabel(r.display_name);
+    
+      const zoneId = findZoneByPoint(pos);
+      if (zoneId) {
+        highlightAndFocus(zoneId);
+        const group = groups.find((g) => g.zoneIds.includes(zoneId));
+        if (group) setOpenGroupId(group.id);
+      }
+    } catch {
+      setSearchError("Error consultando direcciones.");
+    } finally {
+      setIsSearching(false);
+    }
+  }, [addressQuery, highlightAndFocus, findZoneByPoint]);
+
+
+  useEffect(() => {
+    Object.entries(visible).forEach(([id, isVisible]) => setLayerVisible(id, isVisible));
+  }, [visible, setLayerVisible]);
+
+  const onToggleCheckbox = (zoneId: string, v: boolean) => {
+    setVisible((prev) => ({ ...prev, [zoneId]: v }));
+    if (!v) clearHighlight(zoneId);
+
+  };
+  const clearSearch = useCallback(() => {
+    const map = mapInstanceRef.current;
+    setAddressQuery("");
+    setSearchError(null);
+    setSearchResultLabel(null);
+
+    if (searchMarkerRef.current && map) {
+      map.removeLayer(searchMarkerRef.current);
+      searchMarkerRef.current = null;
+    }
+
+    if (highlightedId) clearHighlight(highlightedId);
+    setHighlightedId(null);
+  
+    if (map) map.setView(MAP_CENTER, MAP_ZOOM);
+  }, [highlightedId, clearHighlight]);
+
+  function normalizeColombiaQuery(raw: string) {
+    let q = raw.trim();
+    
+    q = q.replace(/\b(cra|cr|carrera)(\d+)/gi, "$1 $2");
+    q = q.replace(/\b(cl|calle|av|avenida|diag|diagonal|trans|tv|trv)(\d+)/gi, "$1 $2");
+
+    q = q.replace(/#(\S)/g, "# $1");
+    q = q.replace(/\s+/g, " ");
+
+    q = q.replace(/(\d+)\s*(sur|norte|este|oeste)\b/gi, "$1 $2");
+
+    const hasColombia = /colombia/i.test(q);
+    const hasBogota = /bogot[aá]/i.test(q);
+
+    if (!hasBogota) q = `${q}, Bogotá`;
+    if (!hasColombia) q = `${q}, Colombia`;
+
+    return q;
+  }
+
+  //Mi ubicación 
+  const onLocateMe = useCallback(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    if (!navigator.geolocation) {
+      setSearchError("Tu navegador no soporta geolocalización.");
+      return;
+    }
+
+    setSearchError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const p: [number, number] = [lat, lng];
+
+        if (!searchMarkerRef.current) {
+          searchMarkerRef.current = L.marker(p, { icon: glowIcon({ pulse: true }) }).addTo(map);
+        } else {
+          searchMarkerRef.current.setLatLng(p);
+        }
+
+        searchMarkerRef.current.bindPopup("Estás aquí").openPopup();
+        map.flyTo(p, 17, { duration: 1.1 });
+
+        const zoneId = findZoneByPoint(p);
+        if (zoneId) {
+          highlightAndFocus(zoneId);
+          const group = groups.find((g) => g.zoneIds.includes(zoneId));
+          if (group) setOpenGroupId(group.id);
+        }
+      },
+      (err) => {
+        if (err.code === err.PERMISSION_DENIED) {
+          setSearchError("Permiso de ubicación denegado.");
+        } else {
+          setSearchError("No pude obtener tu ubicación.");
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }, [highlightAndFocus]);
+
+  //Localizar subzonas
+  const focusGroup = useCallback((groupId: string) => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const g = groups.find((x) => x.id === groupId);
+    if (!g) return;
+
+    const bounds = L.latLngBounds([]);
+    g.zoneIds.forEach((zoneId) => {
+      const z = zonesById.get(zoneId);
+      if (!z) return;
+
+      setVisible((prev) => ({ ...prev, [zoneId]: true }));
+      setLayerVisible(zoneId, true);
+
+      const layer = ensureLayer(z);
+      const b = (layer as any).getBounds?.() ?? toBounds(z.coords);
+      if (b?.isValid?.()) bounds.extend(b);
+    });
+
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [30, 30] });
+    }
+  }, [zonesById, ensureLayer, setLayerVisible]);
     return(
         <>
             <section className="coverage-hero">
@@ -22,10 +443,24 @@ function CoberturaPage(){
                               type="text"
                               placeholder="Ej: Cra 7 # 72-41, Bogotá o Ciudad Jardín"
                               autoComplete="off"
+                              value={addressQuery}
+                              onChange={(e) => setAddressQuery(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") onSearchAddress();
+                              }}
                             />
                           </div>
 
-                          <button id="btnClearSearch" className="cov-clear" type="button" aria-label="Limpiar">✕</button>
+                          <button
+                            id="btnClearSearch"
+                            className="cov-clear"
+                            type="button"
+                            aria-label="Limpiar"
+                            onClick={clearSearch}
+                            disabled={!addressQuery.trim() && !searchMarkerRef.current}
+                          >
+                            ✕
+                          </button>
 
                           <div id="covDropdown" className="cov-dd" aria-hidden="true">
                             <div className="cov-ddItem" data-value="Cra 7 # 72-41, Bogotá">Cra 7 # 72-41, Bogotá</div>
@@ -41,30 +476,56 @@ function CoberturaPage(){
 
                         
                         <div className="cov-actions">
-                          <button id="btnLocate" className="cov-btn cov-btnGhost" type="button">
+                          <button
+                            className="cov-btn cov-btnGhost"
+                            type="button"
+                            onClick={onLocateMe}
+                          >
                             <span className="ic">📍</span> Mi ubicación
                           </button>
-                          <button id="btnSearch" className="planes-promo__btn planes-promo__btn--primary" type="button">
-                            Consultar <span className="ic">→</span>
+                          <button 
+                            id="btnSearch"
+                            className="planes-promo__btn planes-promo__btn--primary cov-search__btn" 
+                            type="button"
+                            onClick={onSearchAddress}
+                            disabled={isSearching}
+                          >
+                            {isSearching?"Buscando": "Buscar"} <span className="ic">→</span>
                           </button>
                         </div>
                       </div>
 
                       <div className="cov-chips">
-                        <button className="cov-chip" type="button" data-fill="Ciudad Jardín, Bogotá">Ciudad Jardín</button>
-                        <button className="cov-chip" type="button" data-fill="Paraíso, Bogotá">Paraíso</button>
-                        <button className="cov-chip" type="button" data-fill="San Francisco, Bogotá">San Francisco</button>
-                        <button className="cov-chip" type="button" data-fill="La Estrella, Bogotá">La Estrella</button>
+                        {["Ciudad Jardín", "Paraíso", "San Francisco", "La Estrella"].map((label) => (
+                          <button
+                            key={label}
+                            className="cov-chip"
+                            type="button"
+                            onClick={() => {
+                              const groupId = chipToGroupId[label];
+                              if (!groupId) return;
+                            
+                              setAddressQuery(label);
+                            
+                              toggleAndFocusGroup(groupId);
+                            }}
+                          >
+                            {label}
+                          </button>
+                        ))}
                       </div>
 
                       <div className="cov-tip" id="coverageStatus">
                         <span className="cov-tipDot"></span>
                         <div className="cov-tipText">
-                          <strong>Tip:</strong> escribe tu dirección completa para obtener mejores resultados.
+                          
+                        {searchError && <div className="cov-search__error">{searchError}</div>}
+                        {searchResultLabel ? <div className="cov-search__ok">{searchResultLabel}</div>: <><strong>Tip:</strong> escribe tu dirección completa para obtener mejores resultados.</>}
+                          
                         </div>
                       </div>
                     </div>
-
+                        
                     </div>
             </div>
           </section>
@@ -84,246 +545,74 @@ function CoberturaPage(){
                   </div>
 
                   <div className="cov-list">
-
-                    <div className="cov-group" data-group="CIUDAD_JARDIN">
-                      <button className="cov-group__btn" type="button">
-                        <span className="title">CIUDAD JARDÍN</span>
-                        <span className="chev">▾</span>
-                      </button>
-
-                      <div className="cov-group__body">
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="CIUDAD_JARDIN"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">CIUDAD JARDÍN</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="CLARET_2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">CLARET 2</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="cov-group" data-group="LA ESTRELLA">
-                      <button className="cov-group__btn" type="button">
-                        <span className="title">LA ESTRELLA</span>
-                        <span className="chev">▾</span>
-                      </button>
-
-                      <div className="cov-group__body">
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="ACAPULCO"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">ACAPULCO</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="JUAN_PABLO"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">JUAN PABLO</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="LA_ESTRELLA"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">LA ESTRELLA</span>
-                        </label>
-
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="LUCERO"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">LUCERO</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="MOCHUELO"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">MOCHUELO</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="MOCHUELO2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">MOCHUELO 2</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="MOCHUELO3"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">MOCHUELO 3</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="MOCHUELO4"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">MOCHUELO 4</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="URP"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">URP</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="URP2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">URP 2</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="VISTA_HERMOSA"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">VISTA HERMOSA</span>
-                        </label>
-
-                      </div>
-                    </div>
-
-                    <div className="cov-group" data-group="PARAISO">
-                      <button className="cov-group__btn" type="button">
-                        <span className="title">PARAISO</span>
-                        <span className="chev">▾</span>
-                      </button>
-
-                      <div className="cov-group__body">
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="PARAISO"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">PARAISO</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="PARAISO2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">PARAISO 2</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="PARAISO3"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">PARAISO 3</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="PARAISO4"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">PARAISO 4</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="VISTA_HERMOSA2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">VISTA HERMOSA 2</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    <div className="cov-group" data-group="SAN_CARLOS">
-                      <button className="cov-group__btn" type="button">
-                        <span className="title">SAN CARLOS</span>
-                        <span className="chev">▾</span>
-                      </button>
-
-                      <div className="cov-group__body">
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="ACACIAS"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">ACACIAS</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="BRAVO_PAEZ"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">BRAVO_PAEZ</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="BRAVO_PAEZ2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">BRAVO PAEZ 2</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="CLARET"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">CLARET</span>
-                        </label>
-
-                      </div>
-                    </div>
-
-
-                    <div className="cov-group" data-group="SAN_FRANCISCO">
-                      <button className="cov-group__btn" type="button">
-                        <span className="title">SAN FRANCISCO</span>
-                        <span className="chev">▾</span>
-                      </button>
-
-                      <div className="cov-group__body">
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="ACACIAS2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">ACACIAS 2</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="CANDELARIA_LA_NUEVA"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">CANDELARIA LA NUEVA</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="JOSE_RENDON"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">JOSE RENDON</span>
-                        </label>
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="JOSE_RENDON2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">JOSE RENDON 2</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="JUAN_PABLO2"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">JUAN PABLO 2</span>
-                        </label>
-
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="MEXICCO"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">MEXICCO</span>
-                        </label>
-
-                        <label className="cov-item">
-                          <input type="checkbox" checked data-layer="SAN_FRANCISCO"/>
-                          <span className="tick" data-focus="1"></span>
-                          <span className="text" data-focus="1">SAN_FRANCISCO</span>
-                        </label>
-
-                      </div>
+                    <div className="">
+                      {groups.map((g) => (
+                        <div key={g.id} className={`cov-group ${openGroupId === g.id ? "is-open" : ""}`}>
+                          <button
+                            type="button"
+                            className="cov-group__btn"
+                            onClick={() => setOpenGroupId((prev) => (prev === g.id ? "" : g.id))}
+                          >
+                            <span className="title">{g.title}</span>
+                            
+                          <span className="chev">▾</span>
+                          </button>
+                      
+                          {openGroupId === g.id && (
+                            <div className="cov-group__body">
+                              {g.zoneIds.map((zoneId) => {
+                                const z = zonesById.get(zoneId);
+                                if (!z) return null;
+                              
+                                return (
+                                  <div key={zoneId} className={`cov-item ${highlightedId === zoneId ? "is-highlighted" : ""}`}>
+                                    <label className="cov-item__row">
+                                      <input
+                                        type="checkbox"
+                                        checked={!!visible[zoneId]}
+                                        onChange={(e) => onToggleCheckbox(zoneId, e.target.checked)}
+                                      />
+                                      <span className="text">{z.name}</span>
+                                    </label>
+                                
+                                    <button
+                                      type="button"
+                                      className="cov-item__focus"
+                                      onClick={() => {
+                                        // abre el grupo (como tu JS viejo)
+                                        setOpenGroupId(g.id);
+                                        // asegura visible y enfoca
+                                        highlightAndFocus(zoneId);
+                                      }}
+                                    >
+                                      <i className="bi bi-hand-index-fill"></i>
+                                    </button>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
 
                   <div className="cov-footer">
                     <div className="cov-count">
                       <span className="dot"></span>
-                      <strong id="covCount">0</strong>
+                      <strong id="covCount">{checkedCount}</strong>
                       <span>zonas con cobertura</span>
                     </div>
                   </div>
                 </aside>
 
-                <div className="cov-map">
-                  <h2 className="cov-map__title">Mapa</h2>
-                  <div id="map" className="coverage-map__canvas"></div>
+                <div style={{ width: "100%", height: "600px" }}>
+                  <div
+                    ref={mapRef}
+                    style={{ width: "100%", height: "100%", borderRadius: "12px" }}
+                  />
                 </div>
-
+                
               </div>
               </div>
             </section>
