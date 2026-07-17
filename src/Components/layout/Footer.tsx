@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom"
+
 function Footer(){
     return(
         <footer className="footer" id="footer" role="contentinfo">
@@ -7,20 +9,20 @@ function Footer(){
                 <div className="footer-col">
                   <h3>Contacto y servicios</h3>
                   <nav className="footer-links" aria-label="Contacto y servicios">
-                    <a href="/contacto">PQRs</a>
-                    <a href="/planes">Planes</a>
-                    <a href="/nosotros">Nosotros</a>
+                    <NavLink to="/contacto">PQRs</NavLink>
+                    <NavLink to="/planes">Planes</NavLink>
+                    <NavLink to="/nosotros">Nosotros</NavLink>
                   </nav>
 
-                  <a className="footer-btn" href="/cobertura">Consulta cobertura</a>
+                  <NavLink className="footer-btn" to="/cobertura">Consulta cobertura</NavLink>
                 </div>
 
                 <div className="footer-col">
                   <h3>Términos y condiciones</h3>
                   <nav className="footer-links" aria-label="Legales">
-                    <a href="#">Políticas de privacidad</a>
-                    <a href="#">Términos y condiciones del sitio web</a>
-                    <a href="#">Términos y condiciones del servicio de internet prepago</a>
+                    <NavLink to="#">Políticas de privacidad</NavLink>
+                    <NavLink to="#">Términos y condiciones del sitio web</NavLink>
+                    <NavLink to="#">Términos y condiciones del servicio de internet prepago</NavLink>
                   </nav>
                 </div>
 

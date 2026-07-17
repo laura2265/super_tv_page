@@ -304,10 +304,51 @@
   line-height: 1.6;
 }
 
-.acc-panel ul li{
-  margin-bottom: 13px;
-  margin-left: 1rem;
+/* Contenedor desplegable */
+.legal-details {
+  width: 100%;
 }
+
+/* Elimina el marcador predeterminado */
+.legal-details summary {
+  list-style: none;
+}
+
+.legal-details summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Encabezado */
+.legal-details .acc-header {
+  width: 100%;
+  user-select: none;
+}
+
+/* Contenido */
+.legal-details .acc-panel {
+  max-height: none;
+  margin: -6px 0 2rem;
+  padding: 0 10px;
+
+  overflow: visible;
+  color: #d3d3d3;
+}
+
+/* Rotar flecha cuando esté abierto */
+.legal-details[open] .chev {
+  transform: rotate(180deg);
+}
+
+.legal-details .chev {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+/* Cambiar borde al abrir */
+.legal-details[open] .acc-header {
+  border-color: rgba(0, 191, 255, 0.35);
+}
+
 .acc-panel p{
   padding: 10px 2px 10px;
   margin: 0;

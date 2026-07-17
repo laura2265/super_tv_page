@@ -1,4 +1,4 @@
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 
 type TabKey = "internet" | "internettv";
 
@@ -133,10 +133,8 @@ export default function usePageEffect() {
         // 1️⃣ Cambia el estado
         activeTab = next;
     
-        // 2️⃣ Quita la clase activa a todos
         tabBtns.forEach((b) => b.classList.remove("is-active"));
     
-        // 3️⃣ Marca el botón actual
         btn.classList.add("is-active");
     
         // 4️⃣ Renderiza
@@ -149,7 +147,7 @@ export default function usePageEffect() {
     return () => {
       // cleanup
       if (io) io.disconnect();
-      tabBtns.forEach((btn) => {
+      tabBtns.forEach(() => {
       });
     };
   }, []);

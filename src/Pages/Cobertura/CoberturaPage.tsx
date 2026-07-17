@@ -41,6 +41,8 @@ function glowIcon({ pulse = true } = {}) {
   });
 }
 
+
+
 function CoberturaPage(){
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -55,19 +57,20 @@ function CoberturaPage(){
   const [openGroupId, setOpenGroupId] = useState<string>(() => groups[0]?.id ?? "");
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
+  const [suggestions, setSuggestions] = useState<ApiGeocodeItem[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchTimeoutRef = useRef<number | null>(null);
 
-
-
-const toggleAndFocusGroup = useCallback((groupId: string) => {
-  setOpenGroupId((prev) => {
-    const next = prev === groupId ? "" : groupId;
-    if (next) focusGroup(groupId);   // zoom a todas las subzonas
-    return next;
-  });
-}, []);
+  const toggleAndFocusGroup = useCallback((groupId: string) => {
+    setOpenGroupId((prev) => {
+      const next = prev === groupId ? "" : groupId;
+      if (next) focusGroup(groupId);
+      return next;
+    });
+  }, []);
 
   const chipToGroupId: Record<string, string> = {
-  "Ciudad Jardín": "CIUDAD_JARDIN",   // <-- AJUSTA a tus ids reales en coverageData
+  "Ciudad Jardín": "CIUDAD_JARDIN",  
   "Paraíso": "PARAISO",
   "San Francisco": "SAN_FRANCISCO",
   "La Estrella": "LA_ESTRELLA",
@@ -80,31 +83,69 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
     return init;
   });
       
-  type NominatimResult = { lat: string; lon: string; display_name: string };
+  type ApiGeocodeItem = {
+    lat: number;
+    lng: number;
+    label: string;
+    confidence: number | null;
+    components: Record<string, any>;
+  };
 
-  async function geocodeAddress(q: string): Promise<NominatimResult | null> {
-    const url = new URL("https://nominatim.openstreetmap.org/search");
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
+  async function geocodeAddress(q: string): Promise<ApiGeocodeItem[]> {
+    const url = new URL(`${API_URL}/api/maps/geocode`);
     url.searchParams.set("q", q);
-    url.searchParams.set("format", "jsonv2");
-    url.searchParams.set("limit", "5");
-    url.searchParams.set("addressdetails", "1");
-    url.searchParams.set("countrycodes", "co"); 
-    
-    url.searchParams.set("viewbox", "-79.1,-4.3,-66.8,13.6");
-    url.searchParams.set("bounded", "1");
     
     const res = await fetch(url.toString(), {
       headers: {
         Accept: "application/json",
-        "Accept-Language": "es",
       },
     });
-    if (!res.ok) return null;
   
-    const data = (await res.json()) as NominatimResult[];
-    return data[0] ?? null;
+    const data = await res.json();
+  
+    if (!res.ok || !data?.ok) {
+      throw new Error(data?.message || "No fue posible consultar la dirección");
+    }
+  
+    return Array.isArray(data.results) ? data.results : [];
   }
 
+  async function fetchSuggestions(rawValue: string) {
+    const raw = rawValue.trim();
+
+    if (raw.length < 4) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    try {
+      const q = normalizeColombiaQuery(raw);
+      const results = await geocodeAddress(q);
+
+      const filtered = results
+        .filter((item) => {
+          const city =
+            item.components?.city ||
+            item.components?.town ||
+            item.components?._normalized_city ||
+            "";
+          const country = item.components?.country || "";
+
+          return /bogot/i.test(city) && /colombia/i.test(country);
+        })
+        .sort((a, b) => (b.confidence ?? 0) - (a.confidence ?? 0))
+        .slice(0, 6);
+
+      setSuggestions(filtered);
+      setShowSuggestions(filtered.length > 0);
+    } catch {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }
 
   const zonesById = useMemo(() => {
     const m = new Map<string, Zone>();
@@ -113,40 +154,8 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
   }, []);
 
   const checkedCount = useMemo(() => Object.values(visible).filter(Boolean).length, [visible]);
-//hola2
-  useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
 
-    const map = L.map(mapRef.current, { zoomControl: false }).setView(MAP_CENTER, MAP_ZOOM);
-    L.tileLayer(TILE_URL, { attribution: "" }).addTo(map);
-
-    zones.forEach((z) => {
-      L.polygon(z.coords, {
-        color: "#00ff6a",
-        weight: 2,
-        fillColor: "#00ff6a",
-        fillOpacity: 0.14,
-      })
-        .bindTooltip(z.name, { sticky: true })
-        .addTo(map);
-    });
-
-    mapInstanceRef.current = map;
-
-    return () => {
-      map.remove();
-      mapInstanceRef.current = null;
-
-    };
-
-    mapInstanceRef.current = map;
-
-    return () => {
-      map.remove();
-      mapInstanceRef.current = null;
-      layersByIdRef.current = {};
-    };
-  }, []);
+  
 
   const ensureLayer = useCallback((zone: Zone) => {
     const existing = layersByIdRef.current[zone.id];
@@ -168,6 +177,26 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
     layersByIdRef.current[zone.id] = layer;
     return layer;
   }, []);
+
+  useEffect(() => {
+    if (!mapRef.current || mapInstanceRef.current) return;
+
+    const map = L.map(mapRef.current, { zoomControl: false }).setView(MAP_CENTER, MAP_ZOOM);
+    L.tileLayer(TILE_URL, { attribution: "" }).addTo(map);
+
+    mapInstanceRef.current = map;
+
+    zones.forEach((z) => {
+      const layer = ensureLayer(z);
+      layer.addTo(map);
+    });
+
+    return () => {
+      map.remove();
+      mapInstanceRef.current = null;
+      layersByIdRef.current = {};
+    };
+  }, [ensureLayer]);
 
   const setLayerVisible = useCallback(
     (zoneId: string, isVisible: boolean) => {
@@ -256,13 +285,44 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
     return null;
   }
 
-  const onSearchAddress = useCallback(async () => {
+  const handleSelectSuggestion = useCallback((item: ApiGeocodeItem) => {
     const map = mapInstanceRef.current;
     if (!map) return;
+    
+    const pos: [number, number] = [item.lat, item.lng];
+    
+    if (!searchMarkerRef.current) {
+      searchMarkerRef.current = L.marker(pos).addTo(map);
+    } else {
+      searchMarkerRef.current.setLatLng(pos);
+    }
+  
+    searchMarkerRef.current.bindPopup(item.label).openPopup();
+    map.flyTo(pos, 17, { duration: 1.1 });
+  
+    setAddressQuery(item.label);
+    setSearchResultLabel(item.label);
+    setSearchError(null);
+    setSuggestions([]);
+    setShowSuggestions(false);
+  
+    const zoneId = findZoneByPoint(pos);
+    if (zoneId) {
+      highlightAndFocus(zoneId);
+      const group = groups.find((g) => g.zoneIds.includes(zoneId));
+      if (group) setOpenGroupId(group.id);
+    } else {
+      setSearchError("Encontré la dirección, pero está fuera de la cobertura.");
+    }
+  }, [findZoneByPoint, highlightAndFocus]);
 
+  const onSearchAddress = useCallback(async () => {
     const raw = addressQuery.trim();
-    if (raw.length < 4) {
-      setSearchError("Escribe una dirección más específica.");
+
+    if (!isSpecificEnoughAddress(raw)) {
+      setSearchError("Escribe una dirección completa. Ej: Cra 43 # 58C-30 Sur, Bogotá.");
+      setSuggestions([]);
+      setShowSuggestions(false);
       return;
     }
 
@@ -272,55 +332,56 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
 
     try {
       const q = normalizeColombiaQuery(raw);
-      const r = await geocodeAddress(q);
+      const results = await geocodeAddress(q);
 
-      if (!r) {
-        setSearchError("No encontré resultados con esa dirección en Colombia.");
+      const filtered = results
+        .filter((item) => {
+          const city =
+            item.components?.city ||
+            item.components?.town ||
+            item.components?._normalized_city ||
+            "";
+          const country = item.components?.country || "";
+
+          return /bogot/i.test(city) && /colombia/i.test(country);
+        })
+        .sort((a, b) => (b.confidence ?? 0) - (a.confidence ?? 0));
+
+      if (!filtered.length) {
+        setSearchError("No encontré resultados con esa dirección.");
+        setSuggestions([]);
+        setShowSuggestions(false);
         return;
       }
 
-      const lat = Number(r.lat);
-      const lng = Number(r.lon);
-      const pos: [number, number] = [lat, lng];
+      setSuggestions(filtered);
+      setShowSuggestions(true);
 
-      if (!searchMarkerRef.current) {
-        searchMarkerRef.current = L.marker(pos).addTo(map);
-      } else {
-        searchMarkerRef.current.setLatLng(pos);
+      if (filtered.length === 1) {
+        handleSelectSuggestion(filtered[0]);
       }
-
-      searchMarkerRef.current.bindPopup(r.display_name).openPopup();
-      map.flyTo(pos, 17, { duration: 1.1 });
-      setSearchResultLabel(r.display_name);
-    
-      const zoneId = findZoneByPoint(pos);
-      if (zoneId) {
-        highlightAndFocus(zoneId);
-        const group = groups.find((g) => g.zoneIds.includes(zoneId));
-        if (group) setOpenGroupId(group.id);
-      }
-    } catch {
-      setSearchError("Error consultando direcciones.");
+    } catch (error: any) {
+      setSearchError(error?.message || "Error consultando direcciones.");
+      setSuggestions([]);
+      setShowSuggestions(false);
     } finally {
       setIsSearching(false);
     }
-  }, [addressQuery, highlightAndFocus, findZoneByPoint]);
-
-
-  useEffect(() => {
-    Object.entries(visible).forEach(([id, isVisible]) => setLayerVisible(id, isVisible));
-  }, [visible, setLayerVisible]);
+  }, [addressQuery, handleSelectSuggestion]);
 
   const onToggleCheckbox = (zoneId: string, v: boolean) => {
     setVisible((prev) => ({ ...prev, [zoneId]: v }));
     if (!v) clearHighlight(zoneId);
 
   };
+
   const clearSearch = useCallback(() => {
     const map = mapInstanceRef.current;
     setAddressQuery("");
     setSearchError(null);
     setSearchResultLabel(null);
+    setSuggestions([]);
+    setShowSuggestions(false);
 
     if (searchMarkerRef.current && map) {
       map.removeLayer(searchMarkerRef.current);
@@ -329,7 +390,7 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
 
     if (highlightedId) clearHighlight(highlightedId);
     setHighlightedId(null);
-  
+
     if (map) map.setView(MAP_CENTER, MAP_ZOOM);
   }, [highlightedId, clearHighlight]);
 
@@ -351,6 +412,15 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
     if (!hasColombia) q = `${q}, Colombia`;
 
     return q;
+  }
+
+  function isSpecificEnoughAddress(value: string) {
+    const q = value.trim().toLowerCase();
+    const hasStreetType = /\b(cra|cr|carrera|calle|cl|diag|diagonal|trans|tv|trv|av|avenida)\b/.test(q);
+    const hasNumber = /\d+/.test(q);
+    const hasHash = /#/.test(q);
+
+    return q.length >= 8 && hasStreetType && hasNumber && hasHash;
   }
 
   //Mi ubicación 
@@ -444,7 +514,26 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
                               placeholder="Ej: Cra 7 # 72-41, Bogotá o Ciudad Jardín"
                               autoComplete="off"
                               value={addressQuery}
-                              onChange={(e) => setAddressQuery(e.target.value)}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setAddressQuery(value);
+                                setSearchError(null);
+                                setSearchResultLabel(null);
+
+                                if (searchTimeoutRef.current) {
+                                  window.clearTimeout(searchTimeoutRef.current);
+                                }
+                              
+                                if (!value.trim()) {
+                                  setSuggestions([]);
+                                  setShowSuggestions(false);
+                                  return;
+                                }
+                              
+                                searchTimeoutRef.current = window.setTimeout(() => {
+                                  fetchSuggestions(value);
+                                }, 350);
+                              }}
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") onSearchAddress();
                               }}
@@ -462,16 +551,51 @@ const toggleAndFocusGroup = useCallback((groupId: string) => {
                             ✕
                           </button>
 
-                          <div id="covDropdown" className="cov-dd" aria-hidden="true">
-                            <div className="cov-ddItem" data-value="Cra 7 # 72-41, Bogotá">Cra 7 # 72-41, Bogotá</div>
-                            <div className="cov-ddItem" data-value="Cra 13 # 93-31, Bogotá">Cra 13 # 93-31, Bogotá</div>
-                            <div className="cov-ddItem" data-value="Cra 65 # 80A-34, Bogotá">Cra 65 # 80A-34, Bogotá</div>
-                            <div className="cov-ddItem" data-value="Cra 6 # 25B-90, Bogotá">Cra 6 # 25B-90, Bogotá</div>
+                          {showSuggestions && suggestions.length > 0 && (
+                            <div
+                              id="covDropdown"
+                              className={`cov-dd ${showSuggestions && suggestions.length > 0 ? "is-open" : ""}`}
+                              aria-hidden={!(showSuggestions && suggestions.length > 0)}
+                            >
+                              {suggestions.map((item, idx) => {
+                                const city =
+                                  item.components?.city ||
+                                  item.components?.town ||
+                                  item.components?._normalized_city ||
+                                  "";
+                                const suburb =
+                                  item.components?.suburb ||
+                                  item.components?.neighbourhood ||
+                                  "";
+                                const postcode = item.components?.postcode || "";
+                              
+                                return (
+                                  <button
+                                    key={`${item.lat}-${item.lng}-${idx}`}
+                                    type="button"
+                                    className="cov-ddItem"
+                                    onClick={() => handleSelectSuggestion(item)}
+                                  >
+                                    <div style={{ fontWeight: 600 }}>{item.label}</div>
+                                    <small>
+                                      {suburb ? `${suburb} · ` : ""}
+                                      {city ? `${city} · ` : ""}
+                                      {postcode}
+                                    </small>
+                                    {item.confidence != null && (
+                                      <small style={{ display: "block", marginTop: 4 }}>
+                                        Confianza: {item.confidence}
+                                      </small>
+                                    )}
+                                  </button>
+                                );
+                              })}
 
-                            <div className="cov-ddFooter">
-                              <span className="cov-ddHint">Sugerencias</span>
+                              <div className="cov-ddFooter">
+                                <span className="cov-ddHint">Selecciona la dirección correcta</span>
+                              </div>
                             </div>
-                          </div>
+                          )}
                         </div>
 
                         

@@ -70,136 +70,140 @@ function ProteccionInfantil(){
                   <div className="legal-block">
                     <h2 className="section-title">Canales oficiales de denuncia</h2>
 
-                    <button className="acc-header acc-modern" id="bloque-mintic" type="button" aria-expanded="false" data-anchor="bloque-mintic">
-                      <span className="acc-left">
+                    <details className="legal-details">
+                      <summary className="acc-header acc-modern">
+                        <span className="acc-left">
                         <span className="acc-ic">🛡️</span>
-                        <span className="acc-title">
-                          <strong>Ministerio TIC – Internet Sano</strong>
-                          <small>Línea gratuita y sitio oficial para información y denuncia.</small>
-                          <span className="acc-tags">
-                            <em className="tag">MinTIC</em>
-                            <em className="tag">Internet Sano</em>
-                            <em className="tag">Línea nacional</em>
+                          <span className="acc-title">
+                            <strong>Ministerio TIC – Internet Sano</strong>
+                            <small>Línea gratuita y sitio oficial para información y denuncia.</small>
+                            <span className="acc-tags">
+                              <em className="tag">MinTIC</em>
+                              <em className="tag">Internet Sano</em>
+                              <em className="tag">Línea nacional</em>
+                            </span>
                           </span>
                         </span>
-                      </span>
-                      <span className="chev">⌄</span>
-                    </button>
-
-                    <div className="acc-panel acc-panel--modern" role="region" id="bloque-minTIC">
-                      <div className="acc-legal-text">
-                        <p>
-                          El Ministerio TIC implementó puntos de información y denuncia:
-                          <br/><br/>
-                          <strong>Línea telefónica gratuita nacional:</strong> 01 8000 912667
-                          <br/><br/>
-                          <strong>Sitio web:</strong>
-                          <a href="https://www.mintic.gov.co/portal/inicio/Sala-de-prensa/Noticias/720:Internet-Sano-una-estrategia-para-proteger-la-identidad-de-ninos-y-jovenes-en-la-red" target="_blank" rel="noopener noreferrer">
-                            Internet Sano
-                          </a>
-                        </p>
+                        <span className="chev">⌄</span>
+                      </summary>
+                      <div className="acc-panel acc-panel--modern" role="region" id="bloque-minTIC">
+                        <div className="acc-legal-text">
+                          <p>
+                            El Ministerio TIC implementó puntos de información y denuncia:
+                            <br/><br/>
+                            <strong>Línea telefónica gratuita nacional:</strong> 01 8000 912667
+                            <br/><br/>
+                            <strong>Sitio web:</strong>
+                            <a href="https://www.mintic.gov.co/portal/inicio/Sala-de-prensa/Noticias/720:Internet-Sano-una-estrategia-para-proteger-la-identidad-de-ninos-y-jovenes-en-la-red" target="_blank" rel="noopener noreferrer">
+                              Internet Sano
+                            </a>
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    </details>
 
-                    <button className="acc-header acc-modern" type="button" aria-expanded="false" data-anchor="bloque-dijin">
-                      <span className="acc-left">
+                    <details className="legal-details">
+                      <summary className="acc-header acc-modern">
+                        <span className="acc-left">
                         <span className="acc-ic">👮</span>
-                        <span className="acc-title">
-                          <strong>Policía – DIJIN (Delitos informáticos)</strong>
-                          <small>Denuncia virtual, CAI Virtual y contacto en Bogotá.</small>
-                          <span className="acc-tags">
-                            <em className="tag">DIJIN</em>
-                            <em className="tag">Denuncia</em>
-                            <em className="tag">CAI Virtual</em>
+                          <span className="acc-title">
+                            <strong>Policía – DIJIN (Delitos informáticos)</strong>
+                            <small>Denuncia virtual, CAI Virtual y contacto en Bogotá.</small>
+                            <span className="acc-tags">
+                              <em className="tag">DIJIN</em>
+                              <em className="tag">Denuncia</em>
+                              <em className="tag">CAI Virtual</em>
+                            </span>
                           </span>
                         </span>
-                      </span>
-                      <span className="chev">⌄</span>
-                    </button>
+                        <span className="chev">⌄</span>
+                      </summary>
+                      <div className="acc-panel acc-panel--modern" role="region" id="bloque-dijin">
+                        <div className="acc-legal-text">
+                          <p>
+                            <strong>Denuncia virtual:</strong>
+                            <a href="https://adenunciar.policia.gov.co/Adenunciar/Login.aspx?ReturnUrl=%2fadenunciar%2ffrm_denuncia_di.aspx" target="_blank" rel="noopener noreferrer">
+                              adenunciar.policia.gov.co
+                            </a>
+                            <br/><br/>
 
-                    <div className="acc-panel acc-panel--modern" role="region" id="bloque-dijin">
-                      <div className="acc-legal-text">
-                        <p>
-                          <strong>Denuncia virtual:</strong>
-                          <a href="https://adenunciar.policia.gov.co/Adenunciar/Login.aspx?ReturnUrl=%2fadenunciar%2ffrm_denuncia_di.aspx" target="_blank" rel="noopener noreferrer">
-                            adenunciar.policia.gov.co
-                          </a>
-                          <br/><br/>
+                            <strong>CAI Virtual:</strong>
+                            <a href="https://caivirtual.policia.gov.co" target="_blank" rel="noopener noreferrer">
+                              caivirtual.policia.gov.co
+                            </a>
+                            <br/><br/>
 
-                          <strong>CAI Virtual:</strong>
-                          <a href="https://caivirtual.policia.gov.co" target="_blank" rel="noopener noreferrer">
-                            caivirtual.policia.gov.co
-                          </a>
-                          <br/><br/>
-
-                          <strong>Teléfono Bogotá:</strong> (601) 5159700.
-                          <br/><br/>
-                          <strong>Dirección:</strong> Avenida El Dorado No. 75-25, Barrio Modelia.
-                        </p>
+                            <strong>Teléfono Bogotá:</strong> (601) 5159700.
+                            <br/><br/>
+                            <strong>Dirección:</strong> Avenida El Dorado No. 75-25, Barrio Modelia.
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    </details>
 
-                    <button className="acc-header acc-modern" type="button" aria-expanded="false" data-anchor="bloque-fiscalia">
-                      <span className="acc-left">
+                    <details className="legal-details">
+                      <summary className="acc-header acc-modern">
+                        <span className="acc-left">
                         <span className="acc-ic">⚖️</span>
-                        <span className="acc-title">
-                          <strong>Fiscalía General de la Nación</strong>
-                          <small>Canales oficiales para denuncia y contacto.</small>
-                          <span className="acc-tags">
-                            <em className="tag">Formulario</em>
-                            <em className="tag">Línea nacional</em>
-                            <em className="tag">Email</em>
+                          <span className="acc-title">
+                            <strong>Fiscalía General de la Nación</strong>
+                            <small>Canales oficiales para denuncia y contacto.</small>
+                            <span className="acc-tags">
+                              <em className="tag">Formulario</em>
+                              <em className="tag">Línea nacional</em>
+                              <em className="tag">Email</em>
+                            </span>
                           </span>
                         </span>
-                      </span>
-                      <span className="chev">⌄</span>
-                    </button>
-
-                    <div className="acc-panel acc-panel--modern" role="region" id="bloque-fiscalia">
-                      <div className="acc-legal-text">
-                        <p>
-                          <strong>Teléfono:</strong> 018000919748
-                          <br/><br/>
-                          <strong>Página web:</strong>
-                          <a href="https://sicecon.fiscalia.gov.co/denuncia/LlenarFormulario" target="_blank" rel="noopener noreferrer">
-                            sicecon.fiscalia.gov.co
-                          </a>
-                          <br/><br/>
-                          <strong>E-mail:</strong> denunciaanonima@fiscalia.gov.co
-                        </p>
+                        <span className="chev">⌄</span>
+                      </summary>
+                      <div className="acc-panel acc-panel--modern" role="region" id="bloque-fiscalia">
+                        <div className="acc-legal-text">
+                          <p>
+                            <strong>Teléfono:</strong> 018000919748
+                            <br/><br/>
+                            <strong>Página web:</strong>
+                            <a href="https://sicecon.fiscalia.gov.co/denuncia/LlenarFormulario" target="_blank" rel="noopener noreferrer">
+                              sicecon.fiscalia.gov.co
+                            </a>
+                            <br/><br/>
+                            <strong>E-mail:</strong> denunciaanonima@fiscalia.gov.co
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    </details>
 
-                    <button className="acc-header acc-modern" type="button" aria-expanded="false" data-anchor="bloque-icbf">
-                      <span className="acc-left">
-                        <span className="acc-ic">👨‍👩‍👧</span>
-                        <span className="acc-title">
-                          <strong>ICBF – Protección a niños, niñas y adolescentes</strong>
-                          <small>Líneas oficiales y canales de atención.</small>
-                          <span className="acc-tags">
-                            <em className="tag">Línea 141</em>
-                            <em className="tag">WhatsApp</em>
-                            <em className="tag">Atención</em>
+                    <details className="legal-details">
+                      <summary className="acc-header acc-modern">
+                        <span className="acc-left">
+                          <span className="acc-ic">👨‍👩‍👧</span>
+                          <span className="acc-title">
+                            <strong>ICBF – Protección a niños, niñas y adolescentes</strong>
+                            <small>Líneas oficiales y canales de atención.</small>
+                            <span className="acc-tags">
+                              <em className="tag">Línea 141</em>
+                              <em className="tag">WhatsApp</em>
+                              <em className="tag">Atención</em>
+                            </span>
                           </span>
                         </span>
-                      </span>
-                      <span className="chev">⌄</span>
-                    </button>
-
-                    <div className="acc-panel acc-panel--modern" role="region" id="bloque-icbf">
-                      <div className="acc-legal-text">
-                        <p>
-                          <strong>Línea 141:</strong> Línea nacional de protección a niños, niñas y adolescentes (24 horas).
-                          <br/><br/>
-                          <strong>Línea gratuita nacional:</strong> 01 8000 91 80 80 (lunes a viernes, 8:00 a.m. a 5:00 p.m.).
-                          <br/><br/>
-                          <strong>WhatsApp:</strong> 320 239 16 85.
-                          <br/><br/>
-                          <strong>E-mail:</strong> atencionalciudadano@icbf.gov.co.
-                        </p>
+                        <span className="chev">⌄</span>
+                      </summary>
+                      <div className="acc-panel acc-panel--modern" role="region" id="bloque-icbf">
+                        <div className="acc-legal-text">
+                          <p>
+                            <strong>Línea 141:</strong> Línea nacional de protección a niños, niñas y adolescentes (24 horas).
+                            <br/><br/>
+                            <strong>Línea gratuita nacional:</strong> 01 8000 91 80 80 (lunes a viernes, 8:00 a.m. a 5:00 p.m.).
+                            <br/><br/>
+                            <strong>WhatsApp:</strong> 320 239 16 85.
+                            <br/><br/>
+                            <strong>E-mail:</strong> atencionalciudadano@icbf.gov.co.
+                          </p>
+                        </div>
                       </div>
-                    </div>
-
+                    </details>
+                    
                   </div>
                 </div>
               </div>

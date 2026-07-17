@@ -4,6 +4,7 @@ import imgClabemas from "../../assets/Img/logo_cablemas.png"
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useEffect } from "react";
 import useHomeEffect from "../../assets/hooks/useHomeEffects";
+import { NavLink } from "react-router-dom";
 
 function HomePage(){
   useHomeEffect();
@@ -44,9 +45,9 @@ function HomePage(){
                   </p>
                 
                   <div className="planes-promo__cta">
-                    <a className="planes-promo__btn planes-promo__btn--primary" href="/planes">
+                    <NavLink className="planes-promo__btn planes-promo__btn--primary" to="/planes">
                       Ver planes <i className="bi bi-arrow-right"></i>
-                    </a>
+                    </NavLink>
                   
                     <a className="planes-promo__btn planes-promo__btn--ghost" target="_blank"
                        href="https://wa.me/573014916832?text=Hola%20quiero%20información%20de%20planes%20desde%20%2440.000">
@@ -68,7 +69,7 @@ function HomePage(){
                 <div className="row quick-actions-grid">
             
                   <div className="col-sm-6 col-md-3  ">
-                    <a className="quick-card quick-card-primary reveal-left" href="/planes">
+                    <NavLink className="quick-card quick-card-primary reveal-left" to="/planes">
                       <div className="quick-icon">
                         <i className="bi bi-wifi"></i>
                       </div>
@@ -77,11 +78,11 @@ function HomePage(){
                         <p>Conoce Internet Hogar y Empresas.</p>
                         <span className="quick-link">Ver planes →</span>
                       </div>
-                    </a>
+                    </NavLink>
                   </div>
             
                   <div className="col-sm-6 col-md-3 " >
-                    <a className="quick-card reveal-left" href="/cobertura">
+                    <NavLink className="quick-card reveal-left" to="/cobertura">
                       <div className="quick-icon">
                         <i className="bi bi-geo-alt-fill"></i>
                       </div>
@@ -90,11 +91,11 @@ function HomePage(){
                         <p>Consulta si llegamos a tu zona.</p>
                         <span className="quick-link">Consultar →</span>
                       </div>
-                    </a>
+                    </NavLink>
                   </div>
             
                   <div className="col-sm-6 col-md-3" >
-                    <a className="quick-card reveal-left" href="/contacto">
+                    <NavLink className="quick-card reveal-left" to="/contacto">
                       <div className="quick-icon">
                         <i className="bi bi-headset"></i>
                       </div>
@@ -103,7 +104,7 @@ function HomePage(){
                         <p>Ayuda rápida y atención técnica.</p>
                         <span className="quick-link">Ir a soporte →</span>
                       </div>
-                    </a>
+                    </NavLink>
                   </div>
             
                   <div className="col-sm-6 col-md-3" >
@@ -136,17 +137,17 @@ function HomePage(){
                     <div className="slider-overlay"></div>
                   
                     <div className="slider__track">
-                      <a className="slide is-active" href="/planes">
+                      <NavLink className="slide is-active" to="/planes">
                         <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
-                      </a>
+                      </NavLink>
                     
-                      <a className="slide is-active" href="/cobertura">
+                      <NavLink className="slide is-active" to="/cobertura">
                         <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
-                      </a>
+                      </NavLink>
                     
-                      <a className="slide is-active" href="/contacto">
+                      <NavLink className="slide is-active" to="/contacto">
                         <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
-                      </a>
+                      </NavLink>
                     </div>
                   
                     <button className="slider__btn prev" type="button" aria-label="Anterior">‹</button>

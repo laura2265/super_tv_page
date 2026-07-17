@@ -13,9 +13,7 @@ function useHomeEffect(){
     }, [location.pathname]);
 
     //--------------Scrolled-----------------
-
     useEffect(() => {
-
         const header = document.querySelector(".header");
         const logo = document.querySelector(".logito2") as HTMLImageElement | null;
         if( !header || !logo) return;

@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom"
 import"../../assets/css/pages/contacto.css"
 import imgContacto from "../../assets/Img/Contacto/señor.png"
 function ContactoPage(){
@@ -49,7 +50,7 @@ function ContactoPage(){
               <div className="contact-container">
                 <div className="contact-media">
                   <div className="grid-cards">
-                    <a className="info-card ventas" href="./Planes.html" data-channel="ventas">
+                    <NavLink className="info-card ventas" to="/planes" data-channel="ventas">
                       <div className="card-icon">
                         <svg viewBox="0 0 64 64" aria-hidden="true">
                           <path d="M8 18h48v10H8z" fill="currentColor" opacity=".18"/>
@@ -61,9 +62,9 @@ function ContactoPage(){
                       <h3>Ventas</h3>
                       <p>Planes, instalación y cobertura.</p>
                       <span className="card-cta">Contactar →</span>
-                    </a>
+                    </NavLink>
 
-                    <a className="info-card pqrs" href="#" data-channel="pqrs">
+                    <NavLink className="info-card pqrs" to="#" data-channel="pqrs">
                       <div className="card-icon">
                         <svg viewBox="0 0 64 64" aria-hidden="true">
                           <path d="M18 10h20l8 8v36H18z" fill="currentColor" opacity=".18"/>
@@ -75,9 +76,9 @@ function ContactoPage(){
                       <h3>PQRS</h3>
                       <p>Radica tu solicitud por correo.</p>
                       <span className="card-cta">Contactar →</span>
-                    </a>
+                    </NavLink>
 
-                    <a className="info-card cartera" href="#" data-channel="cartera">
+                    <NavLink className="info-card cartera" to="#" data-channel="cartera">
                       <div className="card-icon">
                         <svg viewBox="0 0 64 64" aria-hidden="true">
                           <path d="M12 22h40a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V28a6 6 0 0 1 6-6z" fill="currentColor" opacity=".18"/>
@@ -89,9 +90,9 @@ function ContactoPage(){
                       <h3>Cartera</h3>
                       <p>Pagos, facturación y estado de cuenta.</p>
                       <span className="card-cta">Contactar →</span>
-                    </a>
+                    </NavLink>
 
-                    <a className="info-card soporte" href="#" data-channel="soporte">
+                    <NavLink className="info-card soporte" to="#" data-channel="soporte">
                       <div className="card-icon">
                         <svg viewBox="0 0 64 64" aria-hidden="true">
                           <path d="M32 10c-10 0-18 8-18 18v6c0 3 2 6 6 6h2V28c0-6 4-10 10-10s10 4 10 10v12h2c4 0 6-3 6-6v-6c0-10-8-18-18-18z" fill="currentColor" opacity=".18"/>
@@ -102,7 +103,7 @@ function ContactoPage(){
                       <h3>Soporte</h3>
                       <p>Ayuda técnica y fallas.</p>
                       <span className="card-cta">Contactar →</span>
-                    </a>
+                    </NavLink>
 
                   </div>
                     <div className="cm-strip">

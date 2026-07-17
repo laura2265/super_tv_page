@@ -13,15 +13,15 @@ export const coverageHostspots = [
 export type ZoneCoords = LatLngTuple[] | LatLngTuple[][]; // polygon o multi-polygon
 
 export type Zone = {
-  id: string;          // "PARAISO2"
-  name: string;        // "Paraíso 2"
-  coords: ZoneCoords;  // array coords (o array de arrays)
+  id: string;
+  name: string;
+  coords: ZoneCoords;
 };
 
 export type ZoneGroup = {
-  id: string;          // "PARAISO"
-  title: string;       // "Paraíso"
-  zoneIds: string[];   // ["PARAISO2","PARAISO3"...]
+  id: string;
+  title: string;
+  zoneIds: string[];
 };
 
 export const groups: ZoneGroup[] = [
@@ -29,7 +29,7 @@ export const groups: ZoneGroup[] = [
   { id: "LA_ESTRELLA", title: "La Estrella", zoneIds: ["ACAPULCO","JUAN_PABLO","ESTRELLA","LUCERO","MOCHUELO","MOCHUELO_2","MOCHUELO_3","MOCHUELO_4","URP","URP_2","VISTA_HERMOSA"] },
   { id: "PARAISO", title: "Paraíso", zoneIds: ["PARAISO","PARAISO_2","PARAISO_3","PARAISO_4","VISTA_HERMOSA_2"] },
   { id: "SAN_CARLOS", title: "San Carlos", zoneIds: ["ACACIAS","BRAVO_PAEZ","BRAVO_PAEZ_2","CLARET", "SAN_CARLOS"] },
-  { id: "SAN_FRANCISCO", title: "San Francisco", zoneIds: ["ACACIAS_2","CANDELARIA_LA_NUEVA","JOSE_RENDON","JOSE_RENDON_2","JUAN_PABLO_2","MEXICCO","SAN_FRANCISCO"] },
+  { id: "SAN_FRANCISCO", title: "San Francisco", zoneIds: ["ACACIAS_2","CANDELARIA_LA_NUEVA","JOSE_RENDON","JOSE_RENDON_2","JUAN_PABLO_2","MEXICO","SAN_FRANCISCO"] },
 ];
 export const zones:Zone[] = [
     {

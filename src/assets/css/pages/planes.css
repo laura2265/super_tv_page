@@ -136,7 +136,7 @@
 @media (max-width: 980px){
   .planes-promo__container{ grid-template-columns: 1fr; }
   .planes-promo__title{ font-size: 34px; }
-  .floating-person{ position: relative; right:auto; bottom:auto; width: 200px; margin-top: 12px; }
+  .floating-person{ display: none; }
 }
 
 

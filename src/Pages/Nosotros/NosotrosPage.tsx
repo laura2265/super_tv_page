@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import '../../assets/css/pages/nosotros.css'
 import useNosotrosEffects from '../../assets/hooks/useNosotrosEffect'
 function NosotrosPage() {
@@ -182,9 +183,9 @@ function NosotrosPage() {
                   <h3>¿Listo para conectarte con Super?</h3>
                   <p>Revisa planes y confirma cobertura en tu zona.</p>
                 </div>
-                <a className="planes-promo__btn planes-promo__btn--primary" href="./components/Planes.html">
+                <NavLink className="planes-promo__btn planes-promo__btn--primary" to="/planes">
                   Conoce nuestros planes <i className="bi bi-arrow-right"></i>
-                </a>
+                </NavLink>
               </div>
             </div>
           </section>

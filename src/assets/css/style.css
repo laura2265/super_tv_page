@@ -263,7 +263,482 @@ body.is-ready footer{
   transform: translateX(-50%) translateY(0);
 }
 
+/* ==================================================
+   NUEVO MENÚ MÓVIL
+================================================== */
 
+.mobile-menu-button {
+  display: none;
+}
+
+.mobile-menu-overlay {
+  display: none;
+}
+
+/* Evita que el botón Legalidad tome estilos de enlaces */
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin: 0.5rem;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dropdown-toggle i {
+  font-size: 11px;
+  transition: transform 0.2s ease;
+}
+
+/* Menú de Legalidad en escritorio */
+@media (min-width: 901px) {
+  .navbar-nav .dropdown:hover .dropdown-menu,
+  .navbar-nav .dropdown:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .navbar-nav .dropdown-menu {
+    left: 50%;
+    pointer-events: none;
+  }
+}
+
+/* ==================================================
+   CELULAR Y TABLET
+================================================== */
+
+@media (max-width: 900px) {
+  .header {
+    height: 70px;
+    min-height: 70px;
+
+    padding: 8px 16px;
+
+    z-index: 20000;
+  }
+
+  .navbar-header {
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+  }
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+  }
+
+  .header .navbar-brand img {
+    display: block;
+
+    width: 145px;
+    max-width: 145px;
+    height: auto;
+
+    margin: 0;
+  }
+
+  /*
+   * Ocultamos completamente el menú de escritorio.
+   */
+  .desktop-navigation,
+  .desktop-payment-button {
+    display: none !important;
+  }
+
+  /* Botón hamburguesa */
+  .mobile-menu-button {
+    position: relative;
+    z-index: 20002;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 45px;
+    height: 45px;
+    padding: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+
+    background: rgba(2, 31, 89, 0.65);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+
+    cursor: pointer;
+  }
+
+  .mobile-menu-button span {
+    position: absolute;
+    left: 50%;
+
+    display: block;
+
+    width: 22px;
+    height: 2px;
+
+    border-radius: 999px;
+    background: #fff;
+
+    transform: translateX(-50%);
+    transition:
+      top 0.25s ease,
+      transform 0.25s ease,
+      opacity 0.2s ease;
+  }
+
+  .mobile-menu-button span:nth-child(1) {
+    top: 14px;
+  }
+
+  .mobile-menu-button span:nth-child(2) {
+    top: 21px;
+  }
+
+  .mobile-menu-button span:nth-child(3) {
+    top: 28px;
+  }
+
+  .mobile-menu-button.is-open span:nth-child(1) {
+    top: 21px;
+    color: #f7f9fc;
+  }
+
+  .mobile-menu-button.is-open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-button.is-open span:nth-child(3) {
+    top: 21px;
+
+    transform:
+      translateX(-50%)
+      rotate(-45deg);
+  }
+
+  /* Fondo oscuro */
+  .mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 19999;
+
+    display: block;
+
+    background: rgba(0, 7, 22, 0.68);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .mobile-menu-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Panel lateral */
+  .mobile-menu-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    width: min(86vw, 350px);
+    height: 100vh;
+    height: 100dvh;
+
+    overflow-y: auto;
+
+    background:
+      linear-gradient(
+        180deg,
+        #061f55 0%,
+        #031538 60%,
+        #020d24 100%
+      );
+
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: -20px 0 50px rgba(0, 0, 0, 0.45);
+
+    transform: translateX(100%);
+
+    transition: transform 0.32s ease;
+  }
+
+  .mobile-menu-panel.is-open {
+    transform: translateX(0);
+  }
+
+  /* Encabezado del panel */
+  .mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 76px;
+    padding: 14px 18px;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .mobile-menu-logo {
+    width: 145px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .mobile-menu-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 11px;
+
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+
+    font-size: 21px;
+    cursor: pointer;
+  }
+
+  /* Links principales */
+  .mobile-navigation {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    padding: 18px;
+  }
+
+  .mobile-link,
+  .mobile-legal-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 14px;
+
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    background: transparent;
+
+    color: rgba(255, 255, 255, 0.92);
+    text-decoration: none;
+    text-align: left;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      padding-left 0.2s ease;
+  }
+
+  .mobile-link:hover,
+  .mobile-link.active,
+  .mobile-legal-button:hover {
+    padding-left: 19px;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  .mobile-link.active {
+    border-left: 3px solid #e21c32;
+  }
+
+  .mobile-link i {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+  }
+
+  /* Legalidad */
+  .mobile-legal-section {
+    width: 100%;
+  }
+
+  .mobile-legal-button i {
+    font-size: 12px;
+
+    transition: transform 0.25s ease;
+  }
+
+  .mobile-legal-button.is-open i {
+    transform: rotate(180deg);
+  }
+
+  .mobile-legal-submenu {
+    max-height: 0;
+    padding: 0 7px;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 10px;
+
+    transition:
+      max-height 0.35s ease,
+      opacity 0.25s ease,
+      padding 0.35s ease;
+  }
+
+  .mobile-legal-submenu.is-open {
+    max-height: 430px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+
+    opacity: 1;
+  }
+
+  .mobile-legal-submenu a {
+    display: block;
+
+    padding: 11px 14px;
+
+    border-radius: 8px;
+
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    font-size: 14px;
+
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .mobile-legal-submenu a:hover,
+  .mobile-legal-submenu a.active {
+    background: rgba(44, 143, 179, 0.22);
+    color: #fff;
+  }
+
+  /* Parte inferior */
+  .mobile-menu-footer {
+    padding: 16px 18px 24px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-payment-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    width: 100%;
+    min-height: 48px;
+
+    border-radius: 999px;
+
+    background:
+      linear-gradient(
+        135deg,
+        #dc1c32,
+        #ac0717
+      );
+
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+
+    box-shadow: 0 10px 25px rgba(194, 18, 39, 0.3);
+  }
+}
+
+/* =============================================
+   CORRECCIÓN DEL MENÚ MÓVIL SUPER TV
+============================================= */
+
+@media (max-width: 900px) {
+  /*
+   * Cuando el menú está abierto ocultamos el header
+   * normal para evitar logo y botón duplicados.
+   */
+  .header.mobile-menu-active {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /*
+   * El overlay debe quedar por encima del header.
+   */
+  .mobile-menu-overlay {
+    z-index: 30000 !important;
+  }
+
+  /*
+   * El panel queda encima del overlay.
+   */
+  .mobile-menu-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 30001;
+
+    width: min(86vw, 350px);
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /*
+   * Asegura que el encabezado interno no se reduzca.
+   */
+  .mobile-menu-header {
+    flex: 0 0 76px;
+    width: 100%;
+  }
+
+  .mobile-menu-logo {
+    display: block;
+    width: 145px;
+    max-width: 145px;
+    height: auto;
+    margin: 0;
+  }
+
+  .mobile-menu-close {
+    flex: 0 0 42px;
+    position: relative;
+    z-index: 2;
+  }
+}
 
 /*-----------Animacion del scrolled-----------*/
 .header.scrolled{
@@ -993,7 +1468,7 @@ body.is-ready footer{
 }
 
 .connectividad__head h2 {
-  font-size: 48px;
+  font-size: 38px;
   font-weight: 900;
   letter-spacing: -1px;
   margin-bottom: 10px;
@@ -1260,19 +1735,6 @@ img{
 
 html, body{ overflow-x: hidden; }
 
-
-.nav-toggle{
-  display: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,.20);
-  background: rgba(0,0,0,.25);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  position: relative;
-}
-
 .nav-toggle i{
   position: absolute;
   top: 12px;
@@ -1291,15 +1753,7 @@ html, body{ overflow-x: hidden; }
 .nav-toggle span:nth-child(2){ top: 21px; }
 .nav-toggle span:nth-child(3){ top: 28px; }
 
-.header.is-open .nav-toggle span:nth-child(1){
-  top: 21px; transform: rotate(45deg);
-}
-.header.is-open .nav-toggle span:nth-child(2){
-  opacity: 0;
-}
-.header.is-open .nav-toggle span:nth-child(3){
-  top: 21px; transform: rotate(-45deg);
-}
+
 
 @media (max-width: 980px){
   .header{
