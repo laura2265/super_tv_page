@@ -17,50 +17,6 @@ function ProteccionConsumidor(){
                     <p>
                       Conoce tus derechos: neutralidad, calidad del servicio, PQRS y tratamiento de datos.
                     </p>
-
-                    <div className="hero-chips">
-                      <a className="chip" href="#bloque-neutralidad">Neutralidad</a>
-                      <a className="chip" href="#bloque-calidad">Calidad</a>
-                      <a className="chip" href="./Contacto.html">PQRS</a>
-                    </div>
-
-                    <div className="hero-ctas">
-                      <a className="btn-cta btn-cta--pqrs" href="./Contacto.html">Radicar PQRS →</a>
-                      <a className="btn-cta btn-cta--soporte" href="https://wa.me/57XXXXXXXXXX?text=Hola%20Super%20TV%2C%20necesito%20soporte." target="_blank" rel="noopener noreferrer">Hablar con soporte →</a>
-                    </div>
-                  </div>
-
-                  <div className="quick-support" id="bloque-soporte">
-                    <h2 className="section-title">Soporte rápido</h2>
-
-                    <div className="quick-grid">
-                      <a className="quick-card" href="https://wa.me/57XXXXXXXXXX?text=Hola%20Super%20TV%2C%20necesito%20soporte." target="_blank" rel="noopener noreferrer">
-                        <div className="q-ic">💬</div>
-                        <div className="q-tx">
-                          <strong>WhatsApp soporte</strong>
-                          <span>Asesoría técnica</span>
-                        </div>
-                        <div className="q-go">→</div>
-                      </a>
-
-                      <a className="quick-card quick-card--pqrs" href="./Contacto.html">
-                        <div className="q-ic">🧾</div>
-                        <div className="q-tx">
-                          <strong>Radicar PQRS</strong>
-                          <span>Petición, queja o reclamo</span>
-                        </div>
-                        <div className="q-go">→</div>
-                      </a>
-
-                      <a className="quick-card quick-card--fact" href="https://clientes.portalinternet.net/saldo/super-tv/" target="_blank" rel="noopener noreferrer">
-                        <div className="q-ic">💳</div>
-                        <div className="q-tx">
-                          <strong>Pagar factura</strong>
-                          <span>Pagos y facturación</span>
-                        </div>
-                        <div className="q-go">→</div>
-                      </a>
-                    </div>
                   </div>
 
                   <div className="legal-block">

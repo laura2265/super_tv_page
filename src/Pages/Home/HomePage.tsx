@@ -54,7 +54,6 @@ function HomePage(){
                       WhatsApp <i className="bi bi-whatsapp"></i>
                     </a>
                   </div>
-                
                 </div>
             
                 <div className="planes-promo__right">

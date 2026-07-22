@@ -28,45 +28,9 @@ function ProteccionInfantil(){
                       <a className="chip">ICBF</a>
                     </div>
 
-                    <div className="hero-ctas">
-                      <a className="btn-cta btn-cta--soporte" href="#denuncia-rapida">Denuncia rápida →</a>
-                      <a className="btn-cta btn-cta--pqrs" href="./Proteccion_consumidor.html#bloque-pqrs">Ir a PQRS →</a>
-                    </div>
                   </div>
 
-                  <div className="quick-support" id="denuncia-rapida">
-                    <h2 className="section-title">Denuncia rápida</h2>
-
-                    <div className="quick-grid" id="bloque-mintic">
-                      <a className="quick-card" href="https://www.mintic.gov.co/portal/inicio/Sala-de-prensa/Noticias/720:Internet-Sano-una-estrategia-para-proteger-la-identidad-de-ninos-y-jovenes-en-la-red" target="_blank" rel="noopener noreferrer">
-                        <div className="q-ic">🛡️</div>
-                        <div className="q-tx">
-                          <strong>Internet Sano</strong>
-                          <span>MinTIC – Información y denuncia</span>
-                        </div>
-                        <div className="q-go">→</div>
-                      </a>
-
-                      <a className="quick-card quick-card--pqrs" id="bloque-dijin" href="https://adenunciar.policia.gov.co/Adenunciar/Login.aspx?ReturnUrl=%2fadenunciar%2ffrm_denuncia_di.aspx" target="_blank" rel="noopener noreferrer">
-                        <div className="q-ic">👮</div>
-                        <div className="q-tx">
-                          <strong>Denuncia virtual</strong>
-                          <span>Policía – Adenunciar</span>
-                        </div>
-                        <div className="q-go">→</div>
-                      </a>
-
-                      <a className="quick-card quick-card--fact" href="https://sicecon.fiscalia.gov.co/denuncia/LlenarFormulario" target="_blank" rel="noopener noreferrer">
-                        <div className="q-ic">⚖️</div>
-                        <div className="q-tx">
-                          <strong>Fiscalía</strong>
-                          <span>Formulario de denuncia</span>
-                        </div>
-                        <div className="q-go">→</div>
-                      </a>
-                    </div>
-                  </div>
-
+                  
                   <div className="legal-block">
                     <h2 className="section-title">Canales oficiales de denuncia</h2>
 

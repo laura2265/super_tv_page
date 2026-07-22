@@ -17,46 +17,6 @@ function ProteccionUsuario(){
                       <strong>calidad</strong>, <strong>compensaciones</strong>, facturación y canales de atención.
                     </p>
 
-                    <div className="hero-chips">
-                      <a className="chip">Derechos</a>
-                      <a className="chip">Deberes</a>
-                      <a className="chip">PQRS</a>
-                      <a className="chip">Calidad</a>
-                      <a className="chip chip-dd" >Compensaciones </a>
-                    </div>
-
-                    <div className="quick-support" id="u-acciones">
-                      <h2 className="section-title">Atención rápida</h2>
-
-                      <div className="quick-grid">
-                        <a className="quick-card" href="https://wa.me/573014916832?text=Hola%20Super%20TV%2C%20necesito%20ayuda%20como%20usuario." target="_blank" rel="noopener noreferrer">
-                          <div className="q-ic">💬</div>
-                          <div className="q-tx">
-                            <strong>WhatsApp soporte</strong>
-                            <span>Asistencia inmediata</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-
-                        <a className="quick-card quick-card--pqrs" href="#u-pqrs">
-                          <div className="q-ic">🧾</div>
-                          <div className="q-tx">
-                            <strong>Radicar PQRS</strong>
-                            <span>Petición, queja o reclamo</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-
-                        <a className="quick-card quick-card--fact" href="https://clientes.portalinternet.net/saldo/super-tv/" target="_blank" rel="noopener noreferrer">
-                          <div className="q-ic">💳</div>
-                          <div className="q-tx">
-                            <strong>Pagar factura</strong>
-                            <span>Pagos y facturación</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-                      </div>
-                    </div>
                   </div>
 
                   <div className="legal-block">

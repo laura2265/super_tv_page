@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import"../../assets/css/pages/contacto.css"
 import imgContacto from "../../assets/Img/Contacto/señor.png"
 function ContactoPage(){
@@ -117,7 +117,7 @@ function ContactoPage(){
                     </div>
                   <div className="contact-chip">
                     <span className="dot"></span>
-                    <a href="./Cobertura.html">Atención en Bogotá</a>
+                    <Link to="/cobertura">Atención en Bogotá</Link>
                   </div>
 
                 </div>

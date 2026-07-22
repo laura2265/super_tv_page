@@ -11,8 +11,18 @@ import logoSuper2 from "../../assets/Img/Logito-Empresa-Blanco.png";
 function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileLegalOpen, setMobileLegalOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const location = useLocation();
+  const legalRoutes = [
+    "/proteccion-al-consumidor",
+    "/proteccion-infantil",
+    "/proteccion-al-usuario",
+    "/proteccion-de-datos",
+    "/donde-denunciar",
+  ];
+
+  const isLegalActive = legalRoutes.includes(location.pathname);
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `scroll ${isActive ? "activo" : ""}`;
@@ -22,16 +32,10 @@ function Header() {
     setMobileLegalOpen(false);
   };
 
-  /*
-   * Cierra el menú después de cambiar de ruta.
-   */
   useEffect(() => {
     closeMobileMenu();
   }, [location.pathname]);
 
-  /*
-   * Bloquea el scroll de la página mientras el menú esté abierto.
-   */
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
 
@@ -40,9 +44,6 @@ function Header() {
     };
   }, [mobileMenuOpen]);
 
-  /*
-   * Cierra el menú con la tecla Escape.
-   */
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -54,6 +55,22 @@ function Header() {
 
     return () => {
       document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -116,7 +133,11 @@ function Header() {
               </NavLink>
             </li>
 
-            <li className="scroll dropdown">
+            <li
+              className={`scroll dropdown ${
+                isLegalActive ? "activo" : ""
+              }`}
+            >
               <button
                 type="button"
                 className="dropdown-toggle"

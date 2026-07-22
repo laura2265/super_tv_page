@@ -1,6 +1,6 @@
 import type { LatLngTuple } from "leaflet";
 export const TILE_URL =
-  "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+  "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
 
 export const MAP_CENTER  = [4.55592, -74.13485]as [number, number];
 export const MAP_ZOOM = 13 as const;

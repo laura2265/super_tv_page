@@ -50,46 +50,6 @@ function ProteccionDatos(){
                       </div>
                     </div>
 
-                    <div className="hero-chips">
-                      <a className="chip" href="#cap1">Principios</a>
-                      <a className="chip" href="#cap2">Derechos</a>
-                      <a className="chip" href="#cap3">Política general</a>
-                      <a className="chip" href="#cap5">Datos menores</a>
-                      <a className="chip chip-dd" href="#cap8">Definiciones <span className="dd">⌄</span></a>
-                    </div>
-
-                    <div className="quick-support" id="acciones-rapidas">
-                      <h2 className="section-title">Acciones rápidas</h2>
-
-                      <div className="quick-grid">
-                        <a className="quick-card" href="mailto:supertvelectronic@gmail.com?subject=Consulta%20Habeas%20Data%20-%20Super%20TV">
-                          <div className="q-ic">✉️</div>
-                          <div className="q-tx">
-                            <strong>Enviar correo</strong>
-                            <span>Consultas y solicitudes Habeas Data</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-
-                        <a className="quick-card quick-card--pqrs" href="https://wa.me/57XXXXXXXXXX?text=Hola%20Super%20TV%2C%20tengo%20una%20consulta%20sobre%20datos%20personales." target="_blank" rel="noopener noreferrer">
-                          <div className="q-ic">💬</div>
-                          <div className="q-tx">
-                            <strong>WhatsApp soporte</strong>
-                            <span>Acompañamiento en canal de atención</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-
-                        <a className="quick-card quick-card--fact" href="#" title="(Opcional) Sube un PDF y enlázalo aquí">
-                          <div className="q-ic">⬇️</div>
-                          <div className="q-tx">
-                            <strong>Descargar PDF</strong>
-                            <span>Política completa (opcional)</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-                      </div>
-                    </div>
                   </div>
 
                   <div className="legal-block">

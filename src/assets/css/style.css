@@ -765,6 +765,7 @@ body.is-ready footer{
   color: #333;
 }
 
+
 .header.scrolled .BotonPagarFactura{
   color: #011337;
   border: 1px solid #333;
@@ -794,6 +795,50 @@ body.is-ready footer{
   background: rgba(0,0,0,.94);
 }
 
+
+/*Legalidad scroller*/
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin: 0.5rem;
+  padding: 0;
+
+  border: 0;
+  background: transparent;
+
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+
+  transition:
+    color 1s ease,
+    background-color 1s ease;
+}
+.header.scrolled .dropdown-toggle {
+  color: #333;
+}
+.dropdown-toggle i {
+  font-size: 11px;
+  color: inherit;
+
+  transition:
+    color 1s ease,
+    transform 0.2s ease;
+}
+.header.scrolled .dropdown-toggle i {
+  color: #333;
+}
+
+.header.scrolled .dropdown:hover .dropdown-toggle,
+.header.scrolled .dropdown:focus-within .dropdown-toggle {
+  color: #111;
+}
+
+.header.scrolled .dropdown.activo .dropdown-toggle {
+  color: #111;
+}
 /* ===== Estilos del hero ===== */
 :root{
   --brand-purple: #3b2a86; 
@@ -1891,7 +1936,7 @@ html, body{ overflow-x: hidden; }
   transition: .2s ease;
 }
 .header.is-scrolled .nav-toggle span{
-  background: #111; /* si el header scrolled es claro */
+  background: #111;
 }
 
 .header.is-scrolled .navbar-nav .dropdown-menu{

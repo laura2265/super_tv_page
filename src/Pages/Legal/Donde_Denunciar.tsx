@@ -19,38 +19,7 @@ function DondeDenunciar(){
                       contra menores en internet, estos son los canales oficiales en Colombia.
                     </p>
                   
-                    <div className="quick-support">
-                      <div className="quick-grid">
-                      
-                        <a className="quick-card" href="https://www.mintic.gov.co/portal/inicio/Sala-de-prensa/Noticias/720:Internet-Sano-una-estrategia-para-proteger-la-identidad-de-ninos-y-jovenes-en-la-red" target="_blank">
-                          <div className="q-ic">🛡️</div>
-                          <div className="q-tx">
-                            <strong>Internet Sano</strong>
-                            <span>Ministerio TIC</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-                      
-                        <a className="quick-card quick-card--pqrs" href="https://adenunciar.policia.gov.co/Adenunciar/Login.aspx?ReturnUrl=%2fadenunciar%2ffrm_denuncia_di.aspx" target="_blank">
-                          <div className="q-ic">👮</div>
-                          <div className="q-tx">
-                            <strong>Denuncia virtual</strong>
-                            <span>Policía Nacional</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-                      
-                        <a className="quick-card quick-card--fact" href="https://sicecon.fiscalia.gov.co/denuncia/LlenarFormulario" target="_blank">
-                          <div className="q-ic">⚖️</div>
-                          <div className="q-tx">
-                            <strong>Fiscalía</strong>
-                            <span>Formulario oficial</span>
-                          </div>
-                          <div className="q-go">→</div>
-                        </a>
-                      
-                      </div>
-                    </div>
+                    
                   </div>
 
                   <details className="legal-details">
