@@ -1,6 +1,22 @@
 import fondoIndex from "../../assets/Img/fondoIndx.png"
 import imagenPromo from "../../assets/Img/Promos/Promos.png"
 import imgClabemas from "../../assets/Img/logo_cablemas.png"
+import imgSoftware from "../../assets/Img/softwareRedes.png"
+import imgCanal5 from "../../assets/Img/canal5.png"
+import streaming1 from "../../assets/Img/Streaming/1.jpg"
+import streaming2 from "../../assets/Img/Streaming/2.jpg"
+import streaming3 from "../../assets/Img/Streaming/3.jpg"
+import streaming4 from "../../assets/Img/Streaming/4.jpg"
+import streaming5 from "../../assets/Img/Streaming/5.jpg"
+import streaming6 from "../../assets/Img/Streaming/6.jpg"
+import streaming7 from "../../assets/Img/Streaming/7.jpg"
+import streaming8 from "../../assets/Img/Streaming/8.jpg"
+import streaming9 from "../../assets/Img/Streaming/9.jpg"
+import streaming10 from "../../assets/Img/Streaming/10.jpg"
+import streaming11 from "../../assets/Img/Streaming/11.jpg"
+import streaming12 from "../../assets/Img/Streaming/12.jpg"
+import streaming13 from "../../assets/Img/Streaming/13.jpg"
+import streaming14 from "../../assets/Img/Streaming/14.jpg"
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useEffect } from "react";
 import useHomeEffect from "../../assets/hooks/useHomeEffects";
@@ -16,6 +32,155 @@ function HomePage(){
 
     return () => {
       elements.forEach((el) => el.classList.remove("active"));
+    };
+  }, []);
+
+  useEffect(() => {
+    const sliders = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-slider]")
+    );
+  
+    const cleanups = sliders.map((slider) => {
+      const track =
+        slider.querySelector<HTMLElement>(".slider__track");
+    
+      const slides = Array.from(
+        slider.querySelectorAll<HTMLElement>(".slide")
+      );
+    
+      const previousButton =
+        slider.querySelector<HTMLButtonElement>(
+          ".slider__btn.prev"
+        );
+      
+      const nextButton =
+        slider.querySelector<HTMLButtonElement>(
+          ".slider__btn.next"
+        );
+      
+      const dots = Array.from(
+        slider.querySelectorAll<HTMLButtonElement>(
+          ".slider__dots .dot"
+        )
+      );
+    
+      if (!track || slides.length === 0) {
+        return () => {};
+      }
+    
+      let currentIndex = 0;
+      let intervalId: number | null = null;
+    
+      const renderSlider = () => {
+        track.style.transform =
+          `translateX(-${currentIndex * 100}%)`;
+      
+        dots.forEach((dot, index) => {
+          dot.classList.toggle(
+            "is-active",
+            index === currentIndex
+          );
+        });
+      };
+    
+      const goToSlide = (index: number) => {
+        currentIndex =
+          (index + slides.length) % slides.length;
+      
+        renderSlider();
+      };
+    
+      const goToPrevious = () => {
+        goToSlide(currentIndex - 1);
+      };
+    
+      const goToNext = () => {
+        goToSlide(currentIndex + 1);
+      };
+    
+      const stopAutoplay = () => {
+        if (intervalId !== null) {
+          window.clearInterval(intervalId);
+          intervalId = null;
+        }
+      };
+    
+      const startAutoplay = () => {
+        stopAutoplay();
+      
+        intervalId = window.setInterval(() => {
+          goToNext();
+        }, 5000);
+      };
+    
+      const dotHandlers = dots.map((dot, index) => {
+        const handler = () => {
+          goToSlide(index);
+          startAutoplay();
+        };
+      
+        dot.addEventListener("click", handler);
+      
+        return {
+          dot,
+          handler,
+        };
+      });
+    
+      previousButton?.addEventListener(
+        "click",
+        goToPrevious
+      );
+    
+      nextButton?.addEventListener(
+        "click",
+        goToNext
+      );
+    
+      slider.addEventListener(
+        "mouseenter",
+        stopAutoplay
+      );
+    
+      slider.addEventListener(
+        "mouseleave",
+        startAutoplay
+      );
+    
+      renderSlider();
+      startAutoplay();
+    
+      return () => {
+        stopAutoplay();
+      
+        previousButton?.removeEventListener(
+          "click",
+          goToPrevious
+        );
+      
+        nextButton?.removeEventListener(
+          "click",
+          goToNext
+        );
+      
+        slider.removeEventListener(
+          "mouseenter",
+          stopAutoplay
+        );
+      
+        slider.removeEventListener(
+          "mouseleave",
+          startAutoplay
+        );
+      
+        dotHandlers.forEach(({ dot, handler }) => {
+          dot.removeEventListener("click", handler);
+        });
+      };
+    });
+  
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
     };
   }, []);
 
@@ -122,6 +287,7 @@ function HomePage(){
               </div>
             </section>
             
+
             <section className="mosaicServices" id="servicios">
               <div className="mosaicServices__head">
                 <h2>Nuestros Servicios</h2>
@@ -212,6 +378,119 @@ function HomePage(){
                   </article>
               </div>
             </section>
+            <section>
+              <div className="Streming">
+                <div className="contentStreaming">
+                  <div className="mosaicStreaming__head">
+                    <h2>Nuestros Servicios De Streaming</h2>
+                    <p>Conectamos tu mundo con servicios de streaming</p>
+                  </div>
+                  <div className="connectivity-cards">
+                    <div className="connectivity-cards-streaming ">
+                      <div className="ticker-streaming">
+                        <div className="ticker__track-streaming">
+                          <div className="connectivity-card-streaming"><img src={streaming1}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming2}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming3}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming4}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming5}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming6}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming7}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming8}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming9}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming10}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming11}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming12}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming13}/></div>
+                          <div className="connectivity-card-streaming"><img src={streaming14}/></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mosaicStreaming" id="servicios">
+                    <div className="mosaicGridStreaming">
+                  
+                      <article  className="tile-streaming tile--slider-streaming reveal"  aria-label="Promociones de streaming">
+                        <div  className="slider slider-streaming"  data-slider>
+                          <div className="slider-overlay slider-overlay-streaming" />
+
+                          <div className="slider__track slider__track-streaming">
+                            <NavLink
+                              className="slide slide-streaming"
+                              to="/planes"
+                            >
+                              <img
+                                src={imagenPromo}
+                                alt="Promoción de planes"
+                              />
+                            </NavLink>
+
+                            <NavLink
+                              className="slide slide-streaming"
+                              to="/cobertura"
+                            >
+                              <img
+                                src={imagenPromo}
+                                alt="Consulta nuestra cobertura"
+                              />
+                            </NavLink>
+
+                            <NavLink
+                              className="slide slide-streaming"
+                              to="/contacto"
+                            >
+                              <img
+                                src={imagenPromo}
+                                alt="Comunícate con Super TV"
+                              />
+                            </NavLink>
+                          </div>
+
+                          <button
+                            className="slider__btn slider__btn-streaming prev"
+                            type="button"
+                            aria-label="Promoción anterior"
+                          >
+                            ‹
+                          </button>
+
+                          <button
+                            className="slider__btn slider__btn-streaming next"
+                            type="button"
+                            aria-label="Promoción siguiente"
+                          >
+                            ›
+                          </button>
+
+                          <div
+                            className="slider__dots slider__dots-streaming"
+                            aria-label="Indicadores de promociones"
+                          >
+                            <button
+                              className="dot is-active"
+                              type="button"
+                              aria-label="Ir a promoción 1"
+                            />
+                            <button
+                              className="dot"
+                              type="button"
+                              aria-label="Ir a promoción 2"
+                            />
+                            <button
+                              className="dot"
+                              type="button"
+                              aria-label="Ir a promoción 3"
+                            />
+                          </div>
+                        </div>
+                      </article>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
             
             <section className="connectividad">
               <div className="connectividad__container">
@@ -269,6 +548,8 @@ function HomePage(){
             
               </div>
             </section>
+
+            
             
             
             <section id="work-process" className="connectivity1">
@@ -283,13 +564,26 @@ function HomePage(){
                   <div className="ticker">
                     <div className="ticker__track">
                       <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgCanal5}/></div>
+                      <div className="connectivity-card1"><img src={imgSoftware}/></div>
                       <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgCanal5}/></div>
+                      <div className="connectivity-card1"><img src={imgSoftware}/></div>
                       <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgCanal5}/></div>
+                      <div className="connectivity-card1"><img src={imgSoftware}/></div>
                       <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgCanal5}/></div>
+                      <div className="connectivity-card1"><img src={imgSoftware}/></div>
                       <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgCanal5}/></div>
+                      <div className="connectivity-card1"><img src={imgSoftware}/></div>
                       <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgCanal5}/></div>
+                      <div className="connectivity-card1"><img src={imgSoftware}/></div>
                       <div className="connectivity-card1"><img src={imgClabemas}/></div>
-                      <div className="connectivity-card1"><img src={imgClabemas}/></div>
+                      <div className="connectivity-card1"><img src={imgCanal5}/></div>
+                      <div className="connectivity-card1"><img src={imgSoftware}/></div>
                     </div>
                   </div>
                 </div>

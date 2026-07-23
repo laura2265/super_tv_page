@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-type TabKey = "internet" | "internettv";
+type TabKey = "internet" | "internettv" | "internettvstreaming";
 
 type Plan = {
   price: string;
@@ -25,6 +25,17 @@ export default function usePageEffect() {
         { price: "140.000", speed: "900 Megas", type: "Fibra FTTH", featured: false },
       ],
       internettv: [
+        { price: "40.000", speed: "25 Megas", type: "Internet + TV", featured: false },
+        { price: "50.000", speed: "50 Megas", type: "Internet + TV", featured: false },
+        { price: "60.000", speed: "100 Megas", type: "Internet + TV", featured: true },
+        { price: "70.000", speed: "200 Megas", type: "Internet + TV", featured: false },
+        { price: "80.000", speed: "300 Megas", type: "Internet + TV", featured: false },
+        { price: "90.000", speed: "400 Megas", type: "Internet + TV", featured: false },
+        { price: "100.000", speed: "500 Megas", type: "Internet + TV", featured: false },
+        { price: "130.000", speed: "700 Megas", type: "Internet + TV", featured: false },
+        { price: "160.000", speed: "900 Megas", type: "Internet + TV", featured: false },
+      ],
+      internettvstreaming: [
         { price: "40.000", speed: "25 Megas", type: "Internet + TV", featured: false },
         { price: "50.000", speed: "50 Megas", type: "Internet + TV", featured: false },
         { price: "60.000", speed: "100 Megas", type: "Internet + TV", featured: true },

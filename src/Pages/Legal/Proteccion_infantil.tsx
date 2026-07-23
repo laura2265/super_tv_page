@@ -22,12 +22,11 @@ function ProteccionInfantil(){
                     </p>
 
                     <div className="hero-chips">
-                      <a className="chip">MinTIC</a>
+                      <a className="chip">MinTIC</a> 
                       <a className="chip">DIJIN</a>
                       <a className="chip">Fiscalía</a>
                       <a className="chip">ICBF</a>
                     </div>
-
                   </div>
 
                   

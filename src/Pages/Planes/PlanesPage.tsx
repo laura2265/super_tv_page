@@ -89,6 +89,7 @@ function PlanesPage(){
                     <div className="tabs" role="tablist" aria-label="Tipos de plan">
                         <button className="tab is-active" data-tab="internet">Internet</button>
                         <button className="tab" data-tab="internettv">Internet + TV</button>
+                        <button className="tab" data-tab="internettvstreaming">Internet + TV + Streaming</button>
                     </div>
 
                   </div>

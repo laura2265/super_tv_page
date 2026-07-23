@@ -254,6 +254,7 @@
   color: #fff;
   font-weight: 900;
   cursor: pointer;
+  padding: 12px;
   transition: transform .2s ease, box-shadow .2s ease;
 }
 
