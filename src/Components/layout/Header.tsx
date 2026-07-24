@@ -78,6 +78,8 @@ function Header() {
     <>
     <header
       className={`header ${
+        isScrolled? "scrolled": ""
+      }${
         mobileMenuOpen ? "mobile-menu-active" : ""
       }`}
     >

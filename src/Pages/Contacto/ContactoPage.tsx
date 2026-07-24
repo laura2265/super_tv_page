@@ -1,7 +1,162 @@
 import { Link, NavLink } from "react-router-dom"
 import"../../assets/css/pages/contacto.css"
 import imgContacto from "../../assets/Img/Contacto/señor.png"
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
+
+type channelId =
+ |"pqrs"
+ |"atencion_al_cliente"
+ |"cartera"
+
+ type ContactChannel = {
+  id: channelId,
+  nombre: string,
+  number: string,
+  messageInicial: string,
+ }
+
+ type ContactForm = {
+  nombre: string,
+  asunto: string,
+  documento: string,
+  descripcion: string
+ }
 function ContactoPage(){
+  const CONTACTcHANNELS: ContactChannel[] = [
+    {
+      id: "pqrs",
+      nombre: "PQRS",
+      number: "573123648971",
+      messageInicial: ""
+    },
+    {
+      id: "atencion_al_cliente",
+      nombre: "Atención al cliente",
+      number: "573006808935",
+      messageInicial: "Hola, quiero presentar una petición, queja, reclamo o sugerencia."
+    },
+    {
+      id: "cartera",
+      nombre: "Cartera",
+      number: "573006808935",
+      messageInicial: "Hola, necesito información sobre pagos, facturación o estado de cuenta."
+    }
+  ]
+
+  const INITIAL_FORM: ContactForm = {
+    nombre: "",
+    asunto: "",
+    documento: "",
+    descripcion: "",
+  };
+
+  const [selectedChannel, setSelectedChannel] =
+    useState<ContactChannel | null>(null);
+
+  const [contactForm, setContactForm] =
+    useState<ContactForm>(INITIAL_FORM);
+
+  const openContactModal = (channelId: channelId) => {
+    const channel = CONTACTcHANNELS.find(
+      (item) => item.id === channelId
+    );
+
+    if (!channel) {
+      return;
+    }
+
+    setSelectedChannel(channel);
+
+  setContactForm({
+      ...INITIAL_FORM,
+      asunto: channel.nombre,
+    });
+  };
+
+  const closeContactModal = () => {
+    setSelectedChannel(null);
+    setContactForm(INITIAL_FORM);
+  };
+
+  const handleFieldChange = (
+    event: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = event.target;
+
+    setContactForm((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
+
+  const createWhatsAppLink = (
+    phone: string,
+    message: string
+  ) => {
+    return `https://wa.me/${phone}?text=${encodeURIComponent(
+      message
+    )}`;
+  };
+
+  const handleWhatsAppSubmit = (
+    event: FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    if (!selectedChannel) {
+      return;
+    }
+
+    const message = [
+      selectedChannel.messageInicial,
+      "",
+      `Tipo de solicitud: ${selectedChannel.nombre}`,
+      `Nombre: ${contactForm.nombre.trim()}`,
+      `Asunto: ${contactForm.asunto.trim()}`,
+      `Correo: ${
+        contactForm.documento.trim() || "No informado"
+      }`,
+      `Descripción: ${contactForm.descripcion.trim()}`,
+    ].join("\n");
+
+    const whatsappUrl = createWhatsAppLink(
+      selectedChannel.number,
+      message
+    );
+
+    window.open(
+      whatsappUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    closeContactModal();
+  };
+
+  useEffect(() => {
+    if (!selectedChannel) {
+      return;
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeContactModal();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      );
+    };
+  }, [selectedChannel]);
     return(
         <>
             <section className="planes-promo" aria-label="Promoción de planes">
@@ -64,7 +219,7 @@ function ContactoPage(){
                       <span className="card-cta">Contactar →</span>
                     </NavLink>
 
-                    <NavLink className="info-card pqrs" to="#" data-channel="pqrs">
+                    <button className="info-card pqrs" data-channel="pqrs" onClick={() => openContactModal("pqrs")}>
                       <div className="card-icon">
                         <svg viewBox="0 0 64 64" aria-hidden="true">
                           <path d="M18 10h20l8 8v36H18z" fill="currentColor" opacity=".18"/>
@@ -74,11 +229,12 @@ function ContactoPage(){
                         </svg>
                       </div>
                       <h3>PQRS</h3>
-                      <p>Radica tu solicitud por correo.</p>
+                      <p>Radica tu solicitud por WhatsApp.</p>
                       <span className="card-cta">Contactar →</span>
-                    </NavLink>
+                      
+                    </button>
 
-                    <NavLink className="info-card cartera" to="#" data-channel="cartera">
+                    <button className="info-card cartera" data-channel="cartera" onClick={() => openContactModal("cartera")}>
                       <div className="card-icon">
                         <svg viewBox="0 0 64 64" aria-hidden="true">
                           <path d="M12 22h40a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V28a6 6 0 0 1 6-6z" fill="currentColor" opacity=".18"/>
@@ -88,11 +244,10 @@ function ContactoPage(){
                         </svg>
                       </div>
                       <h3>Cartera</h3>
-                      <p>Pagos, facturación y estado de cuenta.</p>
+                      <p>Ayuda técnica y fallas.</p>
                       <span className="card-cta">Contactar →</span>
-                    </NavLink>
-
-                    <NavLink className="info-card soporte" to="#" data-channel="soporte">
+                    </button>
+                    <button className="info-card atencion_al_cliente" data-channel="atencion_al_cliente" onClick={() => openContactModal("atencion_al_cliente")}>
                       <div className="card-icon">
                         <svg viewBox="0 0 64 64" aria-hidden="true">
                           <path d="M32 10c-10 0-18 8-18 18v6c0 3 2 6 6 6h2V28c0-6 4-10 10-10s10 4 10 10v12h2c4 0 6-3 6-6v-6c0-10-8-18-18-18z" fill="currentColor" opacity=".18"/>
@@ -100,10 +255,12 @@ function ContactoPage(){
                           <path d="M26 52c2 2 5 3 6 3s4-1 6-3" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                         </svg>
                       </div>
-                      <h3>Soporte</h3>
+                      <h3>Atención al cliente</h3>
                       <p>Ayuda técnica y fallas.</p>
                       <span className="card-cta">Contactar →</span>
-                    </NavLink>
+                    </button>
+
+                    
 
                   </div>
                     <div className="cm-strip">
@@ -157,6 +314,138 @@ function ContactoPage(){
 
               </div>
             </section>
+            {selectedChannel && (
+              <div
+                className="contact-modal-overlay"
+                role="presentation"
+                onMouseDown={closeContactModal}
+              >
+                <div
+                  className="contact-modal"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="contact-modal-title"
+                  onMouseDown={(event) =>
+                    event.stopPropagation()
+                  }
+                >
+                  <div className="contact-modal__header">
+                    <div>
+                      <span className="contact-modal__category">
+                        {selectedChannel.nombre}
+                      </span>
+                
+                      <h2 id="contact-modal-title">
+                        Cuéntanos cómo podemos ayudarte
+                      </h2>
+                
+                      <p>
+                        Completa la información y el mensaje se
+                        enviará al WhatsApp de{" "}
+                        {selectedChannel.nombre}.
+                      </p>
+                    </div>
+                
+                    <button
+                      type="button"
+                      className="contact-modal__close"
+                      aria-label="Cerrar formulario"
+                      onClick={closeContactModal}
+                    >
+                      ×
+                    </button>
+                  </div>
+                
+                  <form
+                    className="contact-modal__form"
+                    onSubmit={handleWhatsAppSubmit}
+                  >
+                    <div className="field">
+                      <label htmlFor="modal-contact-name">
+                        Nombre completo
+                      </label>
+                
+                      <input
+                        id="modal-contact-name"
+                        name="nombre"
+                        type="text"
+                        placeholder="Ingresa tu nombre"
+                        autoComplete="name"
+                        value={contactForm.nombre}
+                        onChange={handleFieldChange}
+                        required
+                      />
+                    </div>
+                
+                    <div className="field">
+                      <label htmlFor="modal-contact-subject">
+                        Asunto
+                      </label>
+                
+                      <input
+                        id="modal-contact-subject"
+                        name="asunto"
+                        type="text"
+                        placeholder="Escribe el asunto"
+                        value={contactForm.asunto}
+                        onChange={handleFieldChange}
+                        required
+                      />
+                    </div>
+                
+                    <div className="field">
+                      <label htmlFor="modal-contact-email">
+                        Documento de titular
+                      </label>
+                
+                      <input
+                        id="modal-contact-documento"
+                        name="documento"
+                        type="text"
+                        placeholder="Escribe tu documento"
+                        autoComplete="documento"
+                        value={contactForm.documento}
+                        onChange={handleFieldChange}
+                      />
+                    </div>
+                
+                    <div className="field">
+                      <label htmlFor="modal-contact-description">
+                        Descripción
+                      </label>
+                
+                      <textarea
+                        id="modal-contact-description"
+                        name="descripcion"
+                        placeholder="Cuéntanos detalladamente tu solicitud..."
+                        rows={5}
+                        value={contactForm.descripcion}
+                        onChange={handleFieldChange}
+                        required
+                      />
+                    </div>
+                
+                    <div className="contact-modal__actions">
+                      <button
+                        type="button"
+                        className="contact-modal__cancel"
+                        onClick={closeContactModal}
+                      >
+                        Cancelar
+                      </button>
+                
+                      <button
+                        type="submit"
+                        className="contact-modal__submit"
+                      >
+                        <i className="bi bi-whatsapp" />
+                        Enviar por WhatsApp
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
         </>
     )
 }

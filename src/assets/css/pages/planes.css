@@ -501,10 +501,6 @@ html {
 }
 
 /* Entradas laterales */
-.pricing-card.reveal.from-left{ transform: translateX(-28px) translateY(8px); }
-.pricing-card.reveal.from-right{ transform: translateX(28px) translateY(8px); }
-.pricing-card.reveal.from-left.in-view,
-.pricing-card.reveal.from-right.in-view{ transform: translateX(0) translateY(0); }
 
 /* Destacada: pop */
 .pricing-card.reveal.featured{
@@ -552,4 +548,278 @@ html {
 .pc-btn:hover{
   transform: translateY(-2px);
   filter: brightness(1.05);
+}
+
+
+/* ==========================================
+   COLORES UNIFORMES
+========================================== */
+
+.pricing-card {
+  background:
+    linear-gradient(
+      145deg,
+      var(--card-start, #0d3275),
+      var(--card-end, #298daf)
+    );
+
+  color: #ffffff;
+
+  border: 1px solid rgba(80, 205, 235, 0.35);
+
+  box-shadow:
+    0 18px 42px rgba(10, 35, 80, 0.18);
+
+  filter: none;
+}
+
+/* Tarjeta destacada: mismo azul, un poco más brillante */
+
+.pricing-card.is-featured {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(120, 225, 255, 0.2),
+      transparent 42%
+    ),
+    linear-gradient(
+      145deg,
+      var(--card-start, #173b78),
+      var(--card-end, #3196b9)
+    );
+
+  border-color: rgba(102, 225, 255, 0.75);
+
+  box-shadow:
+    0 24px 55px rgba(8, 38, 90, 0.28),
+    0 0 28px rgba(49, 150, 185, 0.18);
+
+  filter: none;
+}
+
+/* ==========================================
+   TRANSICIÓN SUAVE
+========================================== */
+
+.pricing-card.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: none;
+
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease,
+    box-shadow 0.22s ease;
+
+  transition-delay: var(--d, 0ms);
+}
+
+.pricing-card.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+  filter: none;
+}
+
+.pricing-card.reveal.in-view:hover {
+  transform: translateY(-6px);
+  transition-delay: 0ms;
+
+  box-shadow:
+    0 28px 60px rgba(8, 38, 90, 0.3),
+    0 0 25px rgba(49, 150, 185, 0.18);
+}
+
+/* Evita animaciones distintas en la destacada */
+
+.pricing-card.is-featured.reveal {
+  transform: translateY(28px);
+  filter: none;
+}
+
+.pricing-card.is-featured.reveal.in-view {
+  transform: translateY(0);
+  filter: none;
+}
+
+.pricing-card.is-featured.reveal.in-view:hover {
+  transform: translateY(-6px);
+}
+
+/* Textos */
+
+.pricing-card .pc-price,
+.pricing-card .pc-price strong,
+.pricing-card .pc-price span,
+.pricing-card .pc-list {
+  color: #ffffff;
+}
+
+/* ==================================================
+   ALINEACIÓN DE TARJETAS CON STREAMING
+================================================== */
+
+.pricing-card.has-streaming {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 525px;
+  height: 100%;
+
+  padding: 24px 18px 18px;
+}
+
+/* El precio conserva siempre el mismo espacio */
+
+.pricing-card.has-streaming .pc-price {
+  flex: 0 0 auto;
+
+  min-height: 82px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0;
+}
+
+/* Zona de aplicaciones con altura fija */
+
+.pricing-card.has-streaming .pc-streaming {
+  flex: 0 0 178px;
+
+  min-height: 178px;
+  margin: 0 0 10px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Título de aplicaciones */
+
+.pricing-card.has-streaming
+.pc-streaming__title {
+  flex: 0 0 auto;
+
+  display: block;
+
+  min-height: 18px;
+  margin-bottom: 9px;
+
+  text-align: center;
+}
+
+/* Cuadrícula de logos */
+
+.pricing-card.has-streaming
+.pc-streaming__logos {
+  display: grid;
+
+  grid-template-columns: repeat(4, 46px);
+  grid-auto-rows: 46px;
+
+  justify-content: center;
+  align-content: start;
+
+  gap: 8px;
+}
+
+/* Cada logo tiene exactamente el mismo tamaño */
+
+.pricing-card.has-streaming
+.pc-streaming__logo {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  background: #ffffff;
+
+  overflow: hidden;
+}
+
+/* La imagen no se deforma */
+
+.pricing-card.has-streaming
+.pc-streaming__logo img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  filter: none;
+  transform: none;
+}
+
+/* Zona de beneficios con la misma altura */
+
+.pricing-card.has-streaming .pc-list {
+  flex: 0 0 152px;
+
+  min-height: 152px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 7px;
+
+  margin: 0 0 14px;
+}
+
+/* El botón siempre queda abajo */
+
+.pricing-card.has-streaming .pc-btn {
+  margin-top: auto;
+
+  flex: 0 0 44px;
+}
+
+/* Ajuste de la destacada */
+
+.pricing-card.has-streaming.is-featured {
+  min-height: 525px;
+}
+
+/* Responsive */
+
+@media (max-width: 620px) {
+  .pricing-card.has-streaming {
+    min-height: auto;
+  }
+
+  .pricing-card.has-streaming
+  .pc-streaming {
+    flex-basis: auto;
+    min-height: 0;
+  }
+
+  .pricing-card.has-streaming
+  .pc-list {
+    flex-basis: auto;
+    min-height: 0;
+  }
+
+  .pricing-card.has-streaming
+  .pc-streaming__logos {
+    grid-template-columns: repeat(4, 42px);
+    grid-auto-rows: 42px;
+  }
+
+  .pricing-card.has-streaming
+  .pc-streaming__logo {
+    width: 42px;
+    height: 42px;
+  }
 }

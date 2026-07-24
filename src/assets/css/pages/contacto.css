@@ -1,6 +1,7 @@
 /*-------------------Estilos de contacto----------------*/
 .section-contact{
   padding: 48px 16px;
+  display: flex;
    background:
     radial-gradient(600px 300px at 20% 10%, rgba(34,199,184,.18), transparent 60%),
     radial-gradient(600px 300px at 80% 15%, rgba(99,102,241,.12), transparent 60%),
@@ -10,7 +11,8 @@
 }
 
 .contact-container{
-  max-width: 1120px;
+  max-width: 100%;
+  
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1.1fr .9fr;
@@ -47,6 +49,7 @@
   border:1px solid rgba(0,0,0,.06);
   box-shadow: 0 10px 25px rgba(0,0,0,.06);
   text-decoration:none;
+  text-align: left;
   color:#0f172a;
   position:relative;
   overflow:hidden;
@@ -397,4 +400,289 @@ background: radial-gradient(circle,rgba(0, 101, 242, 0.65) 75%, rgba(171, 208, 2
   opacity:1;
   animation: btnShine .9s ease;
   transition: 1s;
+}
+
+/*Modal*/
+/* Tarjetas usadas como botones */
+
+button.info-card {
+  width: 100%;
+  border: 0;
+
+  font: inherit;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+/* Fondo de la modal */
+
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50000;
+
+  display: grid;
+  place-items: center;
+
+  padding: 20px;
+
+  background: rgba(0, 8, 24, 0.76);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  animation: contactModalFade 0.25s ease;
+}
+
+@keyframes contactModalFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Contenedor */
+
+.contact-modal {
+  width: min(620px, 100%);
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+
+  overflow-y: auto;
+
+  padding: 30px;
+
+  border: 1px solid rgba(44, 143, 179, 0.22);
+  border-radius: 24px;
+
+  background: #fff;
+
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.42);
+
+  animation: contactModalEnter 0.3s ease;
+}
+
+@keyframes contactModalEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Encabezado */
+
+.contact-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-bottom: 25px;
+}
+
+.contact-modal__category {
+  display: inline-flex;
+
+  margin-bottom: 10px;
+  padding: 7px 12px;
+
+  border-radius: 999px;
+
+  background: rgba(44, 143, 179, 0.12);
+  color: #176f91;
+
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contact-modal__header h2 {
+  margin: 0 0 8px;
+
+  color: #071b38;
+
+  font-size: 29px;
+  line-height: 1.15;
+}
+
+.contact-modal__header p {
+  margin: 0;
+
+  color: #607087;
+
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.contact-modal__close {
+  flex: 0 0 42px;
+
+  width: 42px;
+  height: 42px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: #f1f4f8;
+  color: #14233a;
+
+  font-size: 27px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.contact-modal__close:hover {
+  background: #e4eaf1;
+  transform: rotate(5deg);
+}
+
+/* Formulario */
+
+.contact-modal__form {
+  display: grid;
+  gap: 17px;
+}
+
+.contact-modal__form .field {
+  display: grid;
+  gap: 7px;
+}
+
+.contact-modal__form label {
+  color: #17243a;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.contact-modal__form input,
+.contact-modal__form textarea {
+  width: 100%;
+  padding: 13px 14px;
+
+  border: 1px solid #d6dee8;
+  border-radius: 12px;
+  outline: none;
+
+  background: #f9fbfd;
+  color: #14233a;
+
+  font: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.contact-modal__form textarea {
+  min-height: 125px;
+  resize: vertical;
+}
+
+.contact-modal__form input:focus,
+.contact-modal__form textarea:focus {
+  border-color: #2c8fb3;
+  background: #fff;
+
+  box-shadow:
+    0 0 0 4px rgba(44, 143, 179, 0.12);
+}
+
+/* Acciones */
+
+.contact-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  margin-top: 8px;
+}
+
+.contact-modal__cancel,
+.contact-modal__submit {
+  min-height: 46px;
+  padding: 0 18px;
+
+  border: 0;
+  border-radius: 999px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.contact-modal__cancel {
+  background: #edf1f5;
+  color: #27364a;
+}
+
+.contact-modal__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #25d366,
+      #128c4a
+    );
+
+  color: #fff;
+
+  box-shadow:
+    0 12px 25px rgba(37, 211, 102, 0.25);
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  .contact-modal-overlay {
+    align-items: end;
+
+    padding: 10px;
+  }
+
+  .contact-modal {
+    width: 100%;
+    max-height: calc(100dvh - 20px);
+
+    padding: 23px 17px;
+
+    border-radius: 22px 22px 14px 14px;
+  }
+
+  .contact-modal__header h2 {
+    font-size: 24px;
+  }
+
+  .contact-modal__actions {
+    flex-direction: column-reverse;
+  }
+
+  .contact-modal__cancel,
+  .contact-modal__submit {
+    width: 100%;
+  }
 }
