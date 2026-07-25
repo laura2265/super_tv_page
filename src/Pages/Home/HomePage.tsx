@@ -202,7 +202,7 @@ function HomePage(){
                   </span>
                 
                   <h2 className="planes-promo__title">
-                    Internet Fibra Real Hasta <span className="neon-red flicker-soft" >900Mbps</span> en tu hogar 
+                    Internet Fibra Óptica Hasta <span className="neon-red flicker-soft" >900Megas</span> en tu hogar 
                   </h2>
                 
                   <p className="planes-promo__subtitle">

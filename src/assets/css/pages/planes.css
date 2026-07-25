@@ -360,6 +360,7 @@
   align-items:center;
   justify-content:center;
   gap: 10px;
+  cursor: pointer;
   text-decoration:none;
   font-weight: 1000;
   color: rgba(15,23,42,.80);
@@ -686,9 +687,7 @@ html {
 /* Zona de aplicaciones con altura fija */
 
 .pricing-card.has-streaming .pc-streaming {
-  flex: 0 0 178px;
 
-  min-height: 178px;
   margin: 0 0 10px;
 
   display: flex;
@@ -764,10 +763,6 @@ html {
 /* Zona de beneficios con la misma altura */
 
 .pricing-card.has-streaming .pc-list {
-  flex: 0 0 152px;
-
-  min-height: 152px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -821,5 +816,217 @@ html {
   .pc-streaming__logo {
     width: 42px;
     height: 42px;
+  }
+}
+/* ==================================================
+   APLICACIONES DE STREAMING ORGANIZADAS
+================================================== */
+
+.pricing-card.has-streaming {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  min-height: 520px;
+}
+
+/* Contenedor general */
+
+.pc-streaming {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  gap: 9px;
+
+  width: 100%;
+  min-height: 0;
+  margin: 0 0 14px;
+}
+
+/* Título */
+
+.pc-streaming__title {
+  display: block;
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.76);
+
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+/* Logos incluidos */
+
+.pc-streaming__logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+}
+
+.pc-streaming__logo {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px;
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.16);
+
+  overflow: hidden;
+}
+
+.pc-streaming__logo img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  filter: none;
+  transform: none;
+}
+
+/* Condición DGO compacta */
+
+.pc-dgo-condition {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  width: 100%;
+  padding: 6px 8px;
+
+  border: 1px solid rgba(255, 207, 89, 0.35);
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 193, 49, 0.13),
+      rgba(255, 255, 255, 0.05)
+    );
+}
+
+.pc-dgo-condition__text {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #ffe28d;
+
+  font-size: 8px;
+  font-weight: 850;
+  line-height: 1.25;
+  text-align: left;
+}
+
+.pc-dgo-condition__text i {
+  flex: 0 0 auto;
+
+  color: #ffc947;
+
+  font-size: 10px;
+}
+
+/* Logos que dependen de DGO */
+
+.pc-dgo-condition__logos {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+}
+
+.pc-dgo-condition__logo {
+  width: 29px;
+  height: 29px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2px;
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+
+  background: #ffffff;
+
+  overflow: hidden;
+}
+
+.pc-dgo-condition__logo img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  filter: none;
+  transform: none;
+}
+
+/* Beneficios sin alturas forzadas */
+
+.pricing-card.has-streaming .pc-list {
+  flex: 0 0 auto;
+
+  min-height: 0;
+  margin: 0 0 14px;
+
+  gap: 7px;
+}
+
+/* Botón alineado abajo */
+
+.pricing-card.has-streaming .pc-btn {
+  flex: 0 0 44px;
+
+  margin-top: auto;
+}
+
+/* Responsive */
+
+@media (max-width: 620px) {
+  .pricing-card.has-streaming {
+    min-height: auto;
+  }
+
+  .pc-dgo-condition {
+    flex-direction: column;
+    justify-content: center;
+
+    text-align: center;
+  }
+
+  .pc-dgo-condition__text {
+    justify-content: center;
+
+    text-align: center;
   }
 }

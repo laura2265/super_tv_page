@@ -13,6 +13,15 @@ import img11 from "./../Img/Streaming/11.jpg";
 import img12 from "./../Img/Streaming/12.jpg";
 import img13 from "./../Img/Streaming/13.jpg";
 import img14 from "./../Img/Streaming/14.jpg";
+import img15 from "./../Img/Streaming/15.jpg";
+import img16 from "./../Img/Streaming/16.jpg";
+import img17 from "./../Img/Streaming/17.jpg";
+import img18 from "./../Img/Streaming/18.jpg";
+
+const SALES_NUMBERS = [
+  "573006808935",
+  "573103239398",
+] as const;
 
 
 type TabKey =
@@ -24,6 +33,7 @@ type TabKey =
 type StremingApp={
   name: string;
   image: string;
+  requiresDgo?: boolean;
 }
 
 type Plan = {
@@ -140,7 +150,7 @@ const DATA: DataMap = {
       app: [
         {
           name: "K",
-          image: ``
+          image: img13
         },
         {
           name: "PK",
@@ -171,6 +181,10 @@ const DATA: DataMap = {
           image: img5
         },
         {
+          name: "K",
+          image: img13
+        },
+        {
           name: "DGO",
           image: img3
         },
@@ -188,11 +202,13 @@ const DATA: DataMap = {
       app: [
         {
           name: "DGO",
-          image: img3
+          image: img15,
+          requiresDgo: true,
         },
         {
           name: "DGO",
-          image: img3
+          image: img16,
+          requiresDgo: true,
         },
         {
           name: "Q",
@@ -200,7 +216,8 @@ const DATA: DataMap = {
         },
         {
           name: "Amazon Prime",
-          image: img8
+          image: img17,
+          requiresDgo: true,
         },
         {
           name: "HotGO",
@@ -224,40 +241,44 @@ const DATA: DataMap = {
       app: [
         {
           name: "K",
-          image: img3
+          image: img13,
+        },
+        {
+          name: "EXITLOG",
+          image: img10,
         },
         {
           name: "DGO",
-          image: img3
+          image: img15,
+          requiresDgo: true,
         },
         {
-          name: "DGO",
-          image: img3
-        },
-        {
-          name: "Win",
-          image: img7
-        },
-        {
-          name: "Win",
-          image: img7
+          name: "DGO Flex",
+          image: img16,
+          requiresDgo: true,
         },
         {
           name: "Netflix",
-          image: img1
+          image: img1,
         },
         {
-          name: "Amazon",
-          image: img9
+          name: "Disney+",
+          image: img11,
         },
         {
-          name: "ExitLag",
-          image: img10
+          name: "Amazon Prime Video",
+          image: img17,
+          requiresDgo: true,
         },
         {
-          name: "Disney +",
-          image: img5
-        }
+          name: "WINPLAY",
+          image: img7
+        },
+        {
+          name: "WINfutbol",
+          image: img18,
+          requiresDgo: true,
+        },
       ]
     },
   ],
@@ -273,8 +294,24 @@ const DATA: DataMap = {
       featured: false,
       app: [
         {
-          name: "",
-          image: ""
+          name: "K",
+          image: img13
+        },
+        {
+          name: "PK",
+          image: img2
+        },
+        {
+          name: "Indie",
+          image: img14
+        },
+        {
+          name: "Atresplayer",
+          image: img4
+        },
+        {
+          name: "WINLITE",
+          image: img11
         }
       ]
     },
@@ -285,8 +322,20 @@ const DATA: DataMap = {
       featured: true,
       app: [
         {
-          name: "",
-          image: ""
+          name: "DISNEY +",
+          image: img5
+        },
+        {
+          name: "K",
+          image: img13
+        },
+        {
+          name: "DGO",
+          image: img3
+        },
+        {
+          name: "Alas",
+          image: img12
         }
       ]
     },
@@ -297,8 +346,35 @@ const DATA: DataMap = {
       featured: false,
       app: [
         {
-          name: "",
-          image: ""
+          name: "DGO",
+          image: img15,
+          requiresDgo: true,
+        },
+        {
+          name: "DGO",
+          image: img16,
+          requiresDgo: true,
+        },
+        {
+          name: "Q",
+          image: img8
+        },
+        {
+          name: "Amazon Prime",
+          image: img17,
+          requiresDgo: true,
+        },
+        {
+          name: "HotGO",
+          image: img6
+        },
+        {
+          name: "Zen",
+          image: img9
+        },
+        {
+          name: "Disney +",
+          image: img5
         }
       ]
     },
@@ -309,8 +385,43 @@ const DATA: DataMap = {
       featured: false,
       app: [
         {
-          name: "",
-          image: ""
+          name: "K",
+          image: img13,
+        },
+        {
+          name: "EXITLAG",
+          image: img10,
+        },
+        {
+          name: "DGO",
+          image: img15,
+          requiresDgo: true,
+        },
+        {
+          name: "DGO",
+          image: img16,
+          requiresDgo: true,
+        },
+        {
+          name: "NETFLIX",
+          image: img1
+        },
+        {
+          name: "Amazon Prime",
+          image: img17,
+          requiresDgo: true,
+        },
+        {
+          name: "WIN PLAY",
+          image: img7
+        },
+        {
+          name: "WIN FUTBOL",
+          image: img18
+        },
+        {
+          name: "Disney +",
+          image: img5
         }
       ]
     },
@@ -335,10 +446,19 @@ export default function usePageEffect() {
     let activeTab: TabKey = "internet";
     let observer: IntersectionObserver | null = null;
 
+    const getRandomSalesNumber = (): string => {
+      const randomIndex = Math.floor(
+        Math.random() * SALES_NUMBERS.length
+      );
+    
+      return SALES_NUMBERS[randomIndex];
+    };
+
     const createWhatsAppLink = (
+      phone: string,
       message: string
-    ) => {
-      return `https://wa.me/573014916832?text=${encodeURIComponent(
+    ): string => {
+      return `https://wa.me/${phone}?text=${encodeURIComponent(
         message
       )}`;
     };
@@ -389,85 +509,107 @@ export default function usePageEffect() {
  
 
       const validApps =
-  plan.app?.filter(
-    (app) =>
-      app.name.trim() !== "" &&
-      app.image.trim() !== ""
-  ) ?? [];
+        plan.app?.filter(
+          (app) =>
+            app.name.trim() !== "" &&
+            app.image.trim() !== ""
+        ) ?? [];
+      
+      const includedApps = validApps.filter(
+        (app) => !app.requiresDgo
+      );
 
-const visibleApps = validApps.slice(0, 4);
+      const dgoRequiredApps = validApps.filter(
+        (app) => app.requiresDgo
+      );
 
-const remainingApps =
-  Math.max(0, validApps.length - visibleApps.length);
+      const streamingClass =
+        validApps.length > 0
+          ? "has-streaming"
+          : "";
 
-const streamingClass =
-  validApps.length > 0
-    ? "has-streaming"
-    : "";
 
-const appsHTML =
-  validApps.length > 0
-    ? `
-      <div class="pc-streaming">
-        <div class="pc-streaming__header">
-          <span class="pc-streaming__title">
-            Apps incluidas
-          </span>
-
-          <strong class="pc-streaming__total">
-            ${validApps.length}
-          </strong>
-        </div>
-
+      const renderAppLogo = (
+        app: StremingApp
+      ) => `
         <div
-          class="pc-streaming__stack"
-          aria-label="${validApps.length} aplicaciones incluidas"
+          class="pc-streaming__logo"
+          title="${app.name}"
         >
-          ${visibleApps
-            .map(
-              (app, appIndex) => `
-                <div
-                  class="pc-streaming__logo"
-                  title="${app.name}"
-                  style="--logo-index:${appIndex}"
-                >
-                  <img
-                    src="${app.image}"
-                    alt="${app.name}"
-                    loading="lazy"
-                  />
-                </div>
-              `
-            )
-            .join("")}
-
-          ${
-            remainingApps > 0
-              ? `
-                <span
-                  class="pc-streaming__remaining"
-                  title="${remainingApps} aplicaciones adicionales"
-                >
-                  +${remainingApps}
-                </span>
-              `
-              : ""
-          }
+          <img
+            src="${app.image}"
+            alt="${app.name}"
+            loading="lazy"
+          />
         </div>
+      `;
+      const appsHTML =
+        validApps.length > 0
+          ? `
+            <div class="pc-streaming">
+              <span class="pc-streaming__title">
+                Apps incluidas
+              </span>
 
-        <span class="pc-streaming__caption">
-          ${validApps.length === 1
-            ? "1 aplicación disponible"
-            : `${validApps.length} aplicaciones disponibles`
-          }
-        </span>
-      </div>
-    `
-    : "";
+              ${
+                includedApps.length > 0
+                  ? `
+                    <div class="pc-streaming__logos">
+                      ${includedApps
+                        .map(renderAppLogo)
+                        .join("")}
+                    </div>
+                  `
+                  : ""
+              }
+            
+              ${
+                dgoRequiredApps.length > 0
+                  ? `
+                    <div class="pc-dgo-condition">
+                      <div class="pc-dgo-condition__text">
+                        <i class="bi bi-info-circle-fill"></i>
+              
+                        <span>
+                          Disponibles al adquirir DGO
+                        </span>
+                      </div>
+              
+                      <div class="pc-dgo-condition__logos">
+                        ${dgoRequiredApps
+                          .map(
+                            (app) => `
+                              <div
+                                class="pc-dgo-condition__logo"
+                                title="${app.name} requiere DGO"
+                              >
+                                <img
+                                  src="${app.image}"
+                                  alt="${app.name}"
+                                  loading="lazy"
+                                />
+                              </div>
+                            `
+                          )
+                          .join("")}
+                      </div>
+                    </div>
+                  `
+                  : ""
+              }
+            </div>
+          `
+          : "";
 
       const featuredClass = plan.featured
         ? "is-featured featured"
         : "";
+
+        const conditionalAppsText = dgoRequiredApps.length > 0 
+          ? dgoRequiredApps
+              .map((app)=> app.name)
+              .join("")
+          : "";
 
       const message = [
         "Hola, quiero información sobre el siguiente plan:",
@@ -475,9 +617,18 @@ const appsHTML =
         `Velocidad: ${plan.speed}`,
         `Precio: $${plan.price} mensuales`,
         `Tipo: ${plan.type}`,
-        "",
+        includedApps.length > 0
+         ? `Apps incluidas: ${includedApps
+          .map((app)=> app.name)
+          .join("")
+         } `: 
+         "",
+         conditionalAppsText?
+         `Apps disponibles al adquirir DGO: ${conditionalAppsText}`
+         :"",
+         "",
         "¿Me pueden confirmar cobertura e instalación?",
-      ].join("\n");
+      ].filter(Boolean).join("\n");
 
       const benefits = [
         "Instalación rápida",
@@ -511,7 +662,7 @@ const appsHTML =
           </div>
 
           <div class="pc-divider"></div>
-          ${appHtml}
+          ${appsHTML}
 
           <ul class="pc-list">
             <li>
@@ -536,19 +687,75 @@ const appsHTML =
               .join("")}
           </ul>
 
-          <a
-            class="pc-btn"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="${createWhatsAppLink(message)}"
+          <button
+            type="button"
+            class="pc-btn js-plan-whatsapp"
+            data-message="${encodeURIComponent(message)}"
           >
             Contratar
-
             <i class="bi bi-whatsapp"></i>
-          </a>
+          </button>
         </article>
       `;
     };
+
+    
+    const handlePlanWhatsAppClick = (
+      event: MouseEvent
+    ) => {
+      const target = event.target as HTMLElement;
+    
+      const button =
+        target.closest<HTMLButtonElement>(
+          ".js-plan-whatsapp"
+        );
+      
+      if (
+        !button ||
+        !plansGrid.contains(button)
+      ) {
+        return;
+      }
+    
+      const encodedMessage =
+        button.dataset.message;
+    
+      if (!encodedMessage) {
+        console.error(
+          "El plan no tiene un mensaje configurado"
+        );
+      
+        return;
+      }
+    
+      const message =
+        decodeURIComponent(encodedMessage);
+    
+      const selectedPhone =
+        getRandomSalesNumber();
+    
+      const whatsappUrl =
+        createWhatsAppLink(
+          selectedPhone,
+          message
+        );
+      
+      console.log(
+        "WhatsApp seleccionado:",
+        selectedPhone
+      );
+    
+      window.open(
+        whatsappUrl,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    };
+
+    plansGrid.addEventListener(
+      "click",
+      handlePlanWhatsAppClick
+    );
 
     const renderPlans = () => {
       const plans = DATA[activeTab];
@@ -557,10 +764,6 @@ const appsHTML =
         .map(cardHTML)
         .join("");
 
-      /*
-       * Permite comprobar en el inspector
-       * qué pestaña está renderizada.
-       */
       plansGrid.dataset.activeTab = activeTab;
 
       setupReveal();
@@ -603,6 +806,10 @@ const appsHTML =
           String(isActive)
         );
       });
+      plansGrid.addEventListener(
+          "click",
+          handlePlanWhatsAppClick
+        );
 
       renderPlans();
     };
@@ -614,21 +821,27 @@ const appsHTML =
       );
     });
 
+    plansGrid.addEventListener(
+      "click",
+      handlePlanWhatsAppClick
+    );
+
     renderPlans();
 
     return () => {
       observer?.disconnect();
-
-      /*
-       * Es fundamental quitar exactamente
-       * el mismo manejador que se agregó.
-       */
+    
       tabButtons.forEach((button) => {
         button.removeEventListener(
           "click",
           handleTabClick
         );
       });
+    
+      plansGrid.removeEventListener(
+        "click",
+        handlePlanWhatsAppClick
+      );
     };
   }, []);
 

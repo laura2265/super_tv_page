@@ -3,15 +3,19 @@ import"../../assets/css/pages/contacto.css"
 import imgContacto from "../../assets/Img/Contacto/señor.png"
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 
+const CORREO_SUPER_TV =
+  "contacto@supertv.com.co";
+
 type channelId =
  |"pqrs"
  |"atencion_al_cliente"
  |"cartera"
+ |"soporte_tecnico"
 
  type ContactChannel = {
   id: channelId,
   nombre: string,
-  number: string,
+  numbers: string[],
   messageInicial: string,
  }
 
@@ -22,26 +26,134 @@ type channelId =
   descripcion: string
  }
 function ContactoPage(){
+
   const CONTACTcHANNELS: ContactChannel[] = [
     {
       id: "pqrs",
       nombre: "PQRS",
-      number: "573123648971",
+      numbers: [
+        "573123648971",
+      ],
       messageInicial: ""
     },
     {
       id: "atencion_al_cliente",
       nombre: "Atención al cliente",
-      number: "573006808935",
+      numbers:[
+        "573006808935",
+        "573103239398",
+      ],
       messageInicial: "Hola, quiero presentar una petición, queja, reclamo o sugerencia."
     },
     {
       id: "cartera",
       nombre: "Cartera",
-      number: "573006808935",
+      numbers:[
+        "573006808935"
+      ],
       messageInicial: "Hola, necesito información sobre pagos, facturación o estado de cuenta."
+    },
+    {
+      id: "soporte_tecnico",
+      nombre: "Soporte Técnico",
+      numbers:[
+        "573015397647"
+      ],
+      messageInicial: "Hola, necesito reportar una falla técnica en mi servicio."
     }
   ]
+
+
+  const handleEmailSubmit = (
+  event: FormEvent<HTMLFormElement>
+) => {
+  event.preventDefault();
+
+  const form = event.currentTarget;
+  const formData = new FormData(form);
+
+  const nombre = String(
+    formData.get("nombre") ?? ""
+  ).trim();
+
+  const asunto = String(
+    formData.get("asunto") ?? ""
+  ).trim();
+
+  const correo = String(
+    formData.get("email") ?? ""
+  ).trim();
+
+  const telefono = String(
+    formData.get("telefono") ?? ""
+  ).trim();
+
+  const descripcion = String(
+    formData.get("descripcion") ?? ""
+  ).trim();
+
+  const cuerpoMensaje = [
+    "Nuevo mensaje desde la página web de SuperTV",
+    "",
+    `Nombre: ${nombre}`,
+    `Correo del usuario: ${correo}`,
+    `Teléfono: ${
+      telefono || "No informado"
+    }`,
+    `Asunto: ${asunto}`,
+    "",
+    "Descripción:",
+    descripcion,
+  ].join("\n");
+
+  const mailtoUrl =
+    `mailto:${CORREO_SUPER_TV}` +
+    `?subject=${encodeURIComponent(
+      asunto || "Solicitud desde la página web"
+    )}` +
+    `&body=${encodeURIComponent(
+      cuerpoMensaje
+    )}`;
+
+  window.location.href = mailtoUrl;
+};
+  const getContactNumber = (
+    channel: ContactChannel
+  ): string => {
+    const validNumbers = channel.numbers.filter(
+      (number) => number.trim() !== ""
+    );
+
+    if (validNumbers.length === 0) {
+      throw new Error(
+        `El canal ${channel.nombre} no tiene números configurados`
+      );
+    }
+
+    if (validNumbers.length === 1) {
+      return validNumbers[0];
+    }
+    if (channel.id !== "atencion_al_cliente") {
+      return validNumbers[0];
+    }
+
+    const storageKey =
+      "super-tv-last-sales-number";
+
+    const lastIndex = Number(
+      localStorage.getItem(storageKey) ?? "-1"
+    );
+
+    const nextIndex =
+      (lastIndex + 1) % validNumbers.length;
+
+    localStorage.setItem(
+      storageKey,
+      String(nextIndex)
+    );
+
+    return validNumbers[nextIndex];
+  };
 
   const INITIAL_FORM: ContactForm = {
     nombre: "",
@@ -121,8 +233,11 @@ function ContactoPage(){
       `Descripción: ${contactForm.descripcion.trim()}`,
     ].join("\n");
 
+    const selectedNumber =
+      getContactNumber(selectedChannel);
+
     const whatsappUrl = createWhatsAppLink(
-      selectedChannel.number,
+      selectedNumber,
       message
     );
 
@@ -259,8 +374,28 @@ function ContactoPage(){
                       <p>Ayuda técnica y fallas.</p>
                       <span className="card-cta">Contactar →</span>
                     </button>
-
+                    <button
+                      type="button"
+                      className="info-card soporte"
+                      data-channel="soporte_tecnico"
+                      onClick={() =>
+                        openContactModal("soporte_tecnico")
+                      }
+                    >
+                      <div className="card-icon">
+                        <i className="bi bi-router-fill" />
+                      </div>
                     
+                      <h3>Soporte técnico</h3>
+                    
+                      <p>
+                        Fallas de internet, televisión o equipos.
+                      </p>
+                    
+                      <span className="card-cta">
+                        Reportar falla →
+                      </span>
+                    </button>
 
                   </div>
                     <div className="cm-strip">
@@ -283,32 +418,88 @@ function ContactoPage(){
                   <h2>Envíanos un mensaje</h2>
                   <p className="contact-subtitle">Te respondemos lo más pronto posible.</p>
 
-                  <form className="contact-form">
+                  <form className="contact-form"
+                    onSubmit={handleEmailSubmit}
+                  >
                     <div className="field">
-                      <label>Nombre completo</label>
-                      <input placeholder="Ingresa tu nombre" autoComplete="name"/>
+                      <label htmlFor="contact-email-name">
+                        Nombre completo
+                      </label>
+                                      
+                      <input
+                        id="contact-email-name"
+                        name="nombre"
+                        type="text"
+                        placeholder="Ingresa tu nombre"
+                        autoComplete="name"
+                        required
+                      />
                     </div>
-
+                                      
                     <div className="field">
-                      <label>Asunto</label>
-                      <input placeholder="Escribe el asunto"/>
+                      <label htmlFor="contact-email-subject">
+                        Asunto
+                      </label>
+                                      
+                      <input
+                        id="contact-email-subject"
+                        name="asunto"
+                        type="text"
+                        placeholder="Escribe el asunto"
+                        required
+                      />
                     </div>
-
+                                      
                     <div className="field">
-                      <label>Correo</label>
-                      <input type="email" placeholder="Escribe tu correo" autoComplete="email"/>
+                      <label htmlFor="contact-email-address">
+                        Correo
+                      </label>
+                                      
+                      <input
+                        id="contact-email-address"
+                        name="email"
+                        type="email"
+                        placeholder="Escribe tu correo"
+                        autoComplete="email"
+                        required
+                      />
                     </div>
-
+                                      
                     <div className="field">
-                      <label>Descripción</label>
-                      <textarea  placeholder="Cuéntanos tu solicitud..."></textarea>
+                      <label htmlFor="contact-email-phone">
+                        Teléfono
+                      </label>
+                                      
+                      <input
+                        id="contact-email-phone"
+                        name="telefono"
+                        type="tel"
+                        placeholder="Escribe tu teléfono"
+                        autoComplete="tel"
+                      />
                     </div>
-
-                    <button type="submit" className="btn-primary">
-                      Enviar mensaje
+                                      
+                    <div className="field">
+                      <label htmlFor="contact-email-description">
+                        Descripción
+                      </label>
+                                      
+                      <textarea
+                        id="contact-email-description"
+                        name="descripcion"
+                        placeholder="Cuéntanos tu solicitud..."
+                        rows={5}
+                        required
+                      />
+                    </div>
+                                      
+                    <button
+                      type="submit"
+                      className="btn-primary"
+                    >
+                      Enviar por correo
                       <span className="arrow">→</span>
                     </button>
-                    <p className="form-message" id="formMessage"></p>
                   </form>
                 </div>
 
