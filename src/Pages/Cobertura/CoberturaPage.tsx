@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import "../../assets/css/pages/cobertura.css"
-import "../../assets/css/pages/mapa.css"
 import { isHoliday } from "colombian-holidays/isHoliday";
 import "leaflet/dist/leaflet.css"; 
 
@@ -227,21 +226,73 @@ function CoberturaPage(){
               <div className="coverage-hero__inner">
                 <div className="coverage-hero__left">
                   <h1>Cobertura</h1>
-                  
-                        
+                  <span></span>
+                  <p>Consulta nuestras zonas de servicio en Bogotá y confirma si tu dirección tiene disponibilidad.</p>
+                  <span></span>
+                  <a href="#coverage-map" className="coverage-hero__button">
+                    Consultar cobertura
+                    <i className="bi bi-arrow-down" />
+                  </a>
                 </div>
               </div>
             </section>
 
 
-            <section className="coverage-stage">
-              <div className="coverage-wrap">
-              <div className="coverage-grid">
+            <section className="coverage-map-section" id="coverage-map">
+              <div className="coverage-map-container">
 
-                
-                <iframe src="https://www.google.com/maps/d/embed?mid=1dls_2XjRUWcWzb66LDJPJPS663C3z6Q&ehbc=2E312F" width="1160" height="560"></iframe>
-                
-              </div>
+                <div className="coverage-map__header">
+                  <div>
+                    <span className="coverage-map__status">
+                      <span className="coverage-map__dot" />
+                      Cobertura activa
+                    </span>
+
+                    <h2>
+                      Consulta nuestras zonas de servicio
+                    </h2>
+
+                    <p>
+                      Las áreas resaltadas representan los
+                      sectores donde actualmente contamos con
+                      cobertura.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="coverage-map-card">
+                  <iframe
+                    className="coverage-map-card__iframe"
+                    src="https://www.google.com/maps/d/embed?mid=1dls_2XjRUWcWzb66LDJPJPS663C3z6Q&ehbc=2E312F"
+                    title="Mapa de cobertura de SuperTV"
+                    loading="lazy"
+                    allowFullScreen
+                  />
+                </div>
+
+                <div className="coverage-contact">
+                  <div className="coverage-contact__text">
+                    <span>
+                      ¿Tu dirección está dentro de la cobertura?
+                    </span>
+
+                    <strong>
+                      Confirma disponibilidad con uno de nuestros
+                      asesores.
+                    </strong>
+                  </div>
+
+                  <a
+                    href="https://wa.me/573014916832?text=Hola,%20quiero%20confirmar%20si%20tengo%20cobertura%20en%20mi%20dirección."
+                    target="_blank"
+                    rel="noreferrer"
+                    className="coverage-contact__button"
+                  >
+                    <i className="bi bi-whatsapp" />
+                    Confirmar por WhatsApp
+                  </a>
+                </div>
+
               </div>
             </section>
 

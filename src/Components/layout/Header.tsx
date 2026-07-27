@@ -134,6 +134,11 @@ function Header() {
                 Contacto
               </NavLink>
             </li>
+            <li>
+              <NavLink className={linkClass} to="/test-velocidad">
+                Test de velocidad
+              </NavLink>
+            </li>
 
             <li
               className={`scroll dropdown ${

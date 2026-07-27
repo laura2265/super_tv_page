@@ -12,6 +12,7 @@ import ProteccionInfantil from './Pages/Legal/Proteccion_infantil'
 import ProteccionUsuario from './Pages/Legal/Proteccion_usuario'
 import DondeDenunciar from './Pages/Legal/Donde_Denunciar'
 import ErrorPage from './Pages/midleware/Error'
+import TestPage from './Pages/TestVelocidad/TestPage'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path='/planes' element={<PlanesPage/>}/>
           <Route path='/nosotros' element={<NosotrosPage/>}/>
           <Route path='/contacto' element={<ContactoPage/>}/>
+          <Route path='/test-velocidad' element={<TestPage/>}/>
          {/*Legal */}
           <Route path='/proteccion-al-consumidor' element={<ProteccionConsumidor/>}/>
           <Route path='/proteccion-de-datos' element={<ProteccionDatos/>}/>
