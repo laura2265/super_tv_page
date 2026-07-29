@@ -1,7 +1,7 @@
 import '../../assets/css/pages/planes.css'
 import usePageEffect from '../../assets/hooks/usePageEffect'
 import logoSuper from"../../assets/Img/Logo_Super_negativo1.png"
-import imgFibra from "../../assets/Img/Planes/fibraop.jpg"
+import imgFibra from "../../assets/Img/Planes/fibraop.png"
 import Asesor from "../../assets/Img/Planes/hombretraje.webp"
 
 function PlanesPage(){
