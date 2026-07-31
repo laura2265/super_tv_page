@@ -1,5 +1,8 @@
 import fondoIndex from "../../assets/Img/fondoIndx.png"
-import imagenPromo from "../../assets/Img/Promos/Promos.png"
+import imagenPromo from "../../assets/Img/Planes/slider1.png"
+import imagenPromo2 from "../../assets/Img/Planes/slider3.png"
+import imagenPromo3 from "../../assets/Img/Planes/slider 4.png"
+import imagenPromo4 from "../../assets/Img/Planes/slider5.png"
 import imgClabemas from "../../assets/Img/logo_cablemas.png"
 import imgSoftware from "../../assets/Img/SoftwareRedes.png"
 import imgCanal5 from "../../assets/Img/Canal5.png"
@@ -306,12 +309,15 @@ function HomePage(){
                         <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
                       </NavLink>
                     
-                      <NavLink className="slide is-active" to="/cobertura">
-                        <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
+                      <NavLink className="slide is-active" to="/planes">
+                        <img src={imagenPromo2} alt="Promo Internet + TV 100 Megas por 1 año" />
                       </NavLink>
                     
-                      <NavLink className="slide is-active" to="/contacto">
-                        <img src={imagenPromo} alt="Promo Internet + TV 100 Megas por 1 año" />
+                      <NavLink className="slide is-active" to="/planes">
+                        <img src={imagenPromo3} alt="Promo Internet + TV 100 Megas por 1 año" />
+                      </NavLink>
+                      <NavLink className="slide is-active" to="/planes">
+                        <img src={imagenPromo4} alt="Promo Internet + TV 100 Megas por 1 año" />
                       </NavLink>
                     </div>
                   

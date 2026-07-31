@@ -34,7 +34,7 @@ function ContactoPage(){
       numbers: [
         "573123648971",
       ],
-      messageInicial: ""
+      messageInicial: "Hola, quiero presentar una petición, queja, reclamo o sugerencia."
     },
     {
       id: "atencion_al_cliente",
@@ -43,7 +43,7 @@ function ContactoPage(){
         "573006808935",
         "573103239398",
       ],
-      messageInicial: "Hola, quiero presentar una petición, queja, reclamo o sugerencia."
+      messageInicial: "Hola, necesito orientación sobre mi servicio de SuperTV. A continuación comparto mis datos y el motivo de mi consulta."
     },
     {
       id: "cartera",

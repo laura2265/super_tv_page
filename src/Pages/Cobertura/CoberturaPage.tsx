@@ -1,9 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent} from "react";
 import "../../assets/css/pages/cobertura.css"
+import "../../assets/css/pages/contacto.css"
 import { isHoliday } from "colombian-holidays/isHoliday";
 import "leaflet/dist/leaflet.css"; 
 
+type ContactChannel = {
+  id: "atencion_al_cliente";
+  nombre: string;
+  numbers: string[];
+  messageInicial: string;
+};
+
+type CoverageContactForm = {
+  nombre: string;
+  documento: string;
+  direccion: string;
+  barrio: string;
+  localidad: string;
+};
+
 function CoberturaPage(){
+
+  const COVERAGE_CHANNEL: ContactChannel = {
+    id: "atencion_al_cliente",
+    nombre: "Atención al cliente",
+    numbers: [
+      "573006808935",
+      "573103239398",
+    ],
+    messageInicial:
+      "Hola, quiero consultar si SuperTV tiene cobertura disponible en mi dirección.",
+  };
+
+  const INITIAL_COVERAGE_FORM: CoverageContactForm = {
+    nombre: "",
+    documento: "",
+    direccion: "",
+    barrio: "",
+    localidad: "",
+  };
+
   useEffect(() => {
     function parseTimeToMinutes(value: string): number {
       const [hours, minutes] = value
@@ -58,10 +94,6 @@ function CoberturaPage(){
       const hour = Number(parts.hour);
       const minute = Number(parts.minute);
 
-      /*
-       * La librería colombian-holidays compara fechas
-       * en UTC, por eso construimos la fecha de esta forma.
-       */
       const colombianDate = new Date(
         Date.UTC(year, month - 1, day)
       );
@@ -220,6 +252,140 @@ function CoberturaPage(){
       window.clearInterval(intervalId);
     };
   }, []);
+
+  const [isCoverageModalOpen, setIsCoverageModalOpen] = useState(false);
+  const [coverageForm, setCovergaFrom] = useState<CoverageContactForm>(INITIAL_COVERAGE_FORM);
+
+  const openCoverageModal = () =>{
+    setCovergaFrom(INITIAL_COVERAGE_FORM)
+    setIsCoverageModalOpen(true)
+  }
+
+  const closeCoverageModal = ()=>{
+    setIsCoverageModalOpen(false);
+    setCovergaFrom(INITIAL_COVERAGE_FORM)
+  } 
+
+  const handleCoverageFieldChange = (
+    event: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >
+  )=>{
+    const field = event.target.name as keyof CoverageContactForm;
+
+    const value= event.target.value;
+
+    setCovergaFrom((current)=>({
+      ...current,
+      [field]:value,
+    }));
+  }
+
+  const getCoverageContactNumber =(): string=>{
+    const validNumbers =COVERAGE_CHANNEL.numbers.filter(  
+      (number) => number.trim() !== ""
+    );
+
+    if (validNumbers.length === 0) {
+      throw new Error(
+        "Atención al cliente no tiene números configurados"
+      );
+    }
+
+    if (validNumbers.length === 1) {
+      return validNumbers[0];
+    }
+
+    const storageKey = "super-tv-last-coverage-whatsapp-index";
+    const storageIndex = Number(localStorage.getItem(storageKey)??"-1");
+
+    const lastIndex = Number.isFinite(storageIndex)
+    ?storageIndex
+    : -1;
+
+    const nextIndex = (lastIndex + 1)%validNumbers.length;
+
+    localStorage.setItem(
+      storageKey,
+      String(nextIndex)
+    );
+
+    return validNumbers[nextIndex];
+  }
+
+  const createWhatsAppLink = (
+    phone: string,
+    message: string
+  ): string => {
+    return `https://wa.me/${phone}?text=${encodeURIComponent(
+      message
+    )}`;
+  }
+
+  const handleCoverageWhatsAppSubmit = (
+    event: FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    const message=[
+      COVERAGE_CHANNEL.messageInicial,
+      "",
+      "DATOS PARA CONSULTAR COBERTURA",
+      "",
+      `Nombre completo: ${coverageForm.nombre.trim()}`,
+      `Documento del titular: ${
+        coverageForm.documento.trim() || "No informado"
+      }`,
+      `Dirección: ${coverageForm.direccion.trim()}`,
+      `Barrio: ${coverageForm.barrio.trim()}`,
+      `Localidad o municipio: ${coverageForm.localidad}`,
+      "",
+    ].join("\n");
+
+    const selectedNumber = getCoverageContactNumber();
+
+    const whatsappUrl = createWhatsAppLink(
+      selectedNumber,
+      message
+    );
+
+    window.open(
+      whatsappUrl,
+      "_blank",
+      "noopener, noreferrer"
+    ); 
+    closeCoverageModal();
+  }
+
+  useEffect(()=>{
+    if(!isCoverageModalOpen){
+      return;
+    }
+    const previousOverflow = document.body.style.overflow;
+
+    const handleEscape = (
+      event:KeyboardEvent
+    )=>{
+      if(event.key === "Escape"){
+        closeCoverageModal();
+      }
+    }
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener(
+      "keydown",
+      handleEscape
+    );
+
+    return()=>{
+      document.body.style.overflow = previousOverflow;
+
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      )
+    }
+  },[isCoverageModalOpen]);
     return(
         <>
             <section className="coverage-hero">
@@ -282,15 +448,14 @@ function CoberturaPage(){
                     </strong>
                   </div>
 
-                  <a
-                    href="https://wa.me/573014916832?text=Hola,%20quiero%20confirmar%20si%20tengo%20cobertura%20en%20mi%20dirección."
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    type="button"
+                    onClick={openCoverageModal}
                     className="coverage-contact__button"
                   >
                     <i className="bi bi-whatsapp" />
                     Confirmar por WhatsApp
-                  </a>
+                  </button>
                 </div>
 
               </div>
@@ -972,6 +1137,172 @@ function CoberturaPage(){
                 </div>
               </div>
             </section>
+            {
+              isCoverageModalOpen && (
+                <div
+                  className="contact-modal-overlay"
+                  role="presentation"
+                  onMouseDown={(event) => {
+                    if (
+                      event.target === event.currentTarget
+                    ) {
+                      closeCoverageModal();
+                    }
+                  }}
+                >
+                  <div
+                    className="contact-modal"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="coverage-modal-title"
+                  >
+                    <div className="contact-modal__header">
+                      <div>
+                        <span className="contact-modal__category">
+                          Atención al cliente
+                        </span>
+                
+                        <h2 id="coverage-modal-title">
+                          Consulta la cobertura de tu dirección
+                        </h2>
+                
+                        <p>
+                          Completa tus datos y enviaremos la
+                          solicitud al WhatsApp de atención al
+                          cliente.
+                        </p>
+                      </div>
+                
+                      <button
+                        type="button"
+                        className="contact-modal__close"
+                        aria-label="Cerrar formulario"
+                        onClick={closeCoverageModal}
+                      >
+                        ×
+                      </button>
+                    </div>
+                
+                    <form
+                      className="contact-modal__form"
+                      onSubmit={
+                        handleCoverageWhatsAppSubmit
+                      }
+                    >
+                      <div className="field">
+                        <label htmlFor="coverage-name">
+                          Nombre completo
+                        </label>
+                    
+                        <input
+                          id="coverage-name"
+                          name="nombre"
+                          type="text"
+                          placeholder="Ingresa tu nombre"
+                          autoComplete="name"
+                          value={coverageForm.nombre}
+                          onChange={
+                            handleCoverageFieldChange
+                          }
+                          required
+                        />
+                      </div>
+                        
+                      <div className="field">
+                        <label htmlFor="coverage-document">
+                          Documento del titular
+                        </label>
+                        
+                        <input
+                          id="coverage-document"
+                          name="documento"
+                          type="text"
+                          placeholder="Escribe el documento"
+                          inputMode="numeric"
+                          value={coverageForm.documento}
+                          onChange={
+                            handleCoverageFieldChange
+                          }
+                        />
+                      </div>
+                        
+                      <div className="field">
+                        <label htmlFor="coverage-address">
+                          Dirección donde deseas el servicio
+                        </label>
+                        
+                        <input
+                          id="coverage-address"
+                          name="direccion"
+                          type="text"
+                          placeholder="Ejemplo: Calle 20 # 10-15 Sur"
+                          autoComplete="street-address"
+                          value={coverageForm.direccion}
+                          onChange={
+                            handleCoverageFieldChange
+                          }
+                          required
+                        />
+                      </div>
+                        
+                      <div className="field">
+                        <label htmlFor="coverage-neighborhood">
+                          Barrio
+                        </label>
+                        
+                        <input
+                          id="coverage-neighborhood"
+                          name="barrio"
+                          type="text"
+                          placeholder="Escribe el barrio"
+                          value={coverageForm.barrio}
+                          onChange={
+                            handleCoverageFieldChange
+                          }
+                          required
+                        />
+                      </div>
+                        
+                      <div className="field">
+                        <label htmlFor="coverage-location">
+                          Localidad o municipio
+                        </label>
+                        
+                        <input
+                          id="coverage-location"
+                          name="localidad"
+                          type="text"
+                          placeholder="Ejemplo: Ciudad Bolívar"
+                          value={coverageForm.localidad}
+                          onChange={
+                            handleCoverageFieldChange
+                          }
+                          required
+                        />
+                      </div>
+                        
+                      <div className="contact-modal__actions">
+                        <button
+                          type="button"
+                          className="contact-modal__cancel"
+                          onClick={closeCoverageModal}
+                        >
+                          Cancelar
+                        </button>
+                        
+                        <button
+                          type="submit"
+                          className="contact-modal__submit"
+                        >
+                          <i className="bi bi-whatsapp" />
+                          Consultar cobertura
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )
+            }
         </>
     )
 }

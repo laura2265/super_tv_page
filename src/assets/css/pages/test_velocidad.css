@@ -20,7 +20,7 @@
   position: relative;
   z-index: 1;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 2rem auto;
   display: grid;
   grid-template-columns: 1fr;
   gap: 30px;
@@ -47,20 +47,14 @@
 
 .test-page {
   position: relative;
-  padding: 120px 20px 80px;
+  padding: 20px 20px 80px;
   color: #fff;
-  background:
-    linear-gradient(180deg, rgba(6, 17, 39, 0.5), rgba(10, 24, 52, 0.72)),
-    url("/img/wifispeedb.png") center center / cover no-repeat;
 }
 
 .test-page::before {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at top left, rgba(90, 211, 255, 0.24), transparent 38%),
-    linear-gradient(180deg, rgba(6, 17, 39, 0.08), rgba(6, 17, 39, 0.12));
   pointer-events: none;
 }
 
@@ -145,10 +139,12 @@
 
 .test-page__lead,
 .test-page__support-copy {
+  padding: .7rem;
   margin: 0 0 18px;
   color: rgba(255, 255, 255, 0.82);
   font-size: 0.96rem;
   line-height: 1.6;
+  text-align: justify;
 }
 
 .test-page__lead {

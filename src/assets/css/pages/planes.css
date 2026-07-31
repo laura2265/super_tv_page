@@ -114,8 +114,8 @@
 
 .floating-person{
   position:absolute;
-  left: -130px;
-  bottom: -20px;
+  left: 350px;
+  bottom: -70px;
   width: 220px;
   pointer-events: none;
   filter: drop-shadow(0 16px 26px rgba(0,0,0,.28));
@@ -551,11 +551,6 @@ html {
   filter: brightness(1.05);
 }
 
-
-/* ==========================================
-   COLORES UNIFORMES
-========================================== */
-
 .pricing-card {
   background:
     linear-gradient(
@@ -598,9 +593,6 @@ html {
   filter: none;
 }
 
-/* ==========================================
-   TRANSICIÓN SUAVE
-========================================== */
 
 .pricing-card.reveal {
   opacity: 0;
@@ -655,9 +647,6 @@ html {
   color: #ffffff;
 }
 
-/* ==================================================
-   ALINEACIÓN DE TARJETAS CON STREAMING
-================================================== */
 
 .pricing-card.has-streaming {
   display: flex;
@@ -818,14 +807,9 @@ html {
     height: 42px;
   }
 }
-/* ==================================================
-   APLICACIONES DE STREAMING ORGANIZADAS
-================================================== */
-
 .pricing-card.has-streaming {
   display: flex;
   flex-direction: column;
-
   height: 100%;
   min-height: 520px;
 }
@@ -835,10 +819,8 @@ html {
 .pc-streaming {
   position: relative;
   z-index: 2;
-
   display: grid;
   gap: 9px;
-
   width: 100%;
   min-height: 0;
   margin: 0 0 14px;
@@ -848,11 +830,8 @@ html {
 
 .pc-streaming__title {
   display: block;
-
   margin: 0;
-
   color: rgba(255, 255, 255, 0.76);
-
   font-size: 9px;
   font-weight: 900;
   line-height: 1.2;
@@ -862,13 +841,11 @@ html {
 }
 
 /* Logos incluidos */
-
 .pc-streaming__logos {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-
   gap: 7px;
 }
 
@@ -1028,5 +1005,100 @@ html {
     justify-content: center;
 
     text-align: center;
+  }
+}
+
+/* ==================================================
+   PESTAÑAS DE PLANES RESPONSIVAS
+================================================== */
+
+.pricing-section,
+.pricing-head,
+.pricing-controls {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+#planes {
+  overflow-x: clip;
+}
+
+@media (max-width: 700px) {
+  .pricing-section {
+    padding: 44px 12px;
+  }
+
+  .pricing-head {
+    width: 100%;
+    margin-bottom: 22px;
+  }
+
+  .pricing-title {
+    font-size: clamp(32px, 10vw, 42px);
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+  .pricing-subtitle {
+    max-width: 340px;
+    margin: 0 auto 18px;
+
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .pricing-controls {
+    display: block;
+    width: 100%;
+  }
+
+  .tabs {
+    display: grid;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    width: 100%;
+    max-width: 100%;
+
+    gap: 8px;
+    padding: 8px;
+
+    border-radius: 18px;
+
+    box-sizing: border-box;
+  }
+
+  .tab {
+    width: 100%;
+    min-width: 0;
+    min-height: 50px;
+    height: auto;
+
+    padding: 8px 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    font-size: 12px;
+    line-height: 1.2;
+    text-align: center;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 340px) {
+  .tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .tab {
+    min-height: 44px;
   }
 }
