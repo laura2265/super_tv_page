@@ -39,7 +39,6 @@
 }
 .btn--primary:hover{ transform: translateY(-1px); filter: brightness(1.03); }
 .btn--ghost{
-    
   background: linear-gradient(135deg, #D93B48, #2C8FB3);
   border-color: rgba(255,255,255,.18);
   color: white;
@@ -51,23 +50,23 @@
   position: relative;
   overflow:hidden;
   padding: 9rem 0 40px;
-  background: radial-gradient(1200px 500px at 20% 20%, rgba(58,168,255,.20), transparent 60%),
-              radial-gradient(900px 500px at 70% 40%, rgba(98,70,255,.22), transparent 62%),
-              linear-gradient(180deg, #071226, #071a33);
+  background: radial-gradient(1200px 500px at 20% 20%, rgba(158, 207, 245, 0.2), transparent 60%),
+              radial-gradient(900px 500px at 70% 40%, rgba(101, 82, 209, 0.22), transparent 62%),
+              linear-gradient(180deg, #ffffff, #f3f4f5);
   color: var(--text);
 }
 .about-hero__bg{
   position:absolute; inset:0;
   background:
-    radial-gradient(circle at 80% 20%, rgba(58,168,255,.30), transparent 40%),
-    radial-gradient(circle at 15% 70%, rgba(26,86,255,.22), transparent 45%);
+    radial-gradient(circle at 80% 20%, rgba(192, 222, 245, 0.3), transparent 40%),
+    radial-gradient(circle at 15% 70%, rgba(192, 192, 194, 0.22), transparent 45%);
   opacity:.9;
   pointer-events:none;
 }
 .about-hero__glow{
   position:absolute; right:-120px; top:60px;
   width: 520px; height: 520px;
-  background: radial-gradient(circle, rgba(58,168,255,.28), transparent 65%);
+  background: radial-gradient(circle, rgba(197, 225, 247, 0.219), transparent 65%);
   filter: blur(2px);
   pointer-events:none;
 }
@@ -80,9 +79,11 @@
   padding: 10px 16px;
   border-radius: 999px;
   background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   margin-bottom: 18px;
+  color: #333;
 }
+
 .pill__icon{
   width: 24px; height:24px;
   display:grid; place-items:center;
@@ -94,16 +95,44 @@
   margin: 0;
   font-size: clamp(32px, 5vw, 56px);
   letter-spacing: -0.02em;
+  color: #050505;
 }
 .about-hero__title span{
-  color: #68d0ff;
   text-shadow: 0 0 24px rgba(104,208,255,.22);
+}
+
+.neon-red{
+  color: #1a56ff;
+  font-weight: 1000;
+  text-shadow:
+    0 0 5px #3aa8ff,
+    0 0 10px #1b76bb,
+    0 0 20px #1a56ff;
+}
+.neon-red:hover{
+  color: #ffffff;
+  text-shadow:
+    0 0 6px #6bbcfa,
+    0 0 12px #3aa8ff,
+    0 0 24px #1b76bb,
+    0 0 50px #0a5e9e,
+    0 0 90px #1a56ff;
+  transform: scale(1.08);
+}
+
+.neon-red:hover::after{
+  opacity: 1;
+  filter: blur(18px);
+}
+/* Parpadeo suave */
+.flicker-soft{
+  animation: neonFlicker 3s infinite;
 }
 .about-hero__subtitle{
   margin: 12px auto 22px;
   max-width: 720px;
   font-size: 18px;
-  color: rgba(255,255,255,.82);
+  color: rgba(8, 8, 8, 0.82);
 }
 
 .about-hero__cta{
@@ -131,13 +160,13 @@
   font-size: 24px;
   font-weight: 900;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: #050505;
 }
 .stat__num small{ font-size: 14px; font-weight: 800; opacity:.9; margin-left:6px; }
 .stat__label{
   margin-top: 6px;
   font-size: 13px;
-  color: rgba(255,255,255,.78);
+  color: rgba(2, 2, 2, 0.78);
 }
 
 /* Responsive hero */

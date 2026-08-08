@@ -196,37 +196,6 @@ function HomePage(){
                 <img id="heroBg" className="planes-promo__img" src={fondoIndex} alt="Fibra óptica"/>
                 <div className="planes-promo__overlay"></div>
               </div>
-            
-              <div className="planes-promo__container">
-                <div className="planes-promo__left">
-                  <span className="planes-promo__badge">
-                    <i className="bi bi-lightning-charge-fill" style={{color: "#ff9500"}}></i>
-                    Bienvenido a Super Tv
-                  </span>
-                
-                  <h2 className="planes-promo__title">
-                    Internet Fibra Óptica Hasta <span className="neon-red flicker-soft" >900Megas</span> en tu hogar 
-                  </h2>
-                
-                  <p className="planes-promo__subtitle">
-                    Instalación rápida · Cobertura en tu zona
-                  </p>
-                
-                  <div className="planes-promo__cta">
-                    <NavLink className="planes-promo__btn planes-promo__btn--primary" to="/planes">
-                      Ver planes <i className="bi bi-arrow-right"></i>
-                    </NavLink>
-                  
-                    <a className="planes-promo__btn planes-promo__btn--ghost" target="_blank"
-                       href="https://wa.me/573014916832?text=Hola%20quiero%20información%20de%20planes%20desde%20%2440.000">
-                      WhatsApp <i className="bi bi-whatsapp"></i>
-                    </a>
-                  </div>
-                </div>
-            
-                <div className="planes-promo__right">
-                </div>
-              </div>
             </section>
             
             

@@ -298,7 +298,7 @@ function ContactoPage(){
                   <div className="planes-promo__cta">
 
                     <a className="planes-promo__btn planes-promo__btn--primary2" target="_blank"
-                       href="https://wa.me/573014916832?text=Hola%20quiero%20información%20de%20planes%20desde%20%2440.000">
+                       href="https://wa.me/573006808935?text=Hola%20quiero%20información%20de%20planes%20desde%20%2440.000">
                       WhatsApp <i className="bi bi-whatsapp"></i>
                     </a>
 

@@ -90,7 +90,7 @@ body.is-ready footer{
   content:"";
   position:absolute;
   inset:0;
-  background: rgba(2, 31, 89, 0.35);
+  background: rgba(255, 255, 255, 0.359);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   opacity: 1;
@@ -211,9 +211,6 @@ body.is-ready footer{
   transform: translateX(-50%);
   width: 12px;
   height: 12px;
-  background: rgba(0,0,0,.92);
-  border-left: 1px solid rgba(255,255,255,.10);
-  border-top: 1px solid rgba(255,255,255,.10);
   transform: translateX(-50%) rotate(45deg);
 }
 
@@ -331,7 +328,6 @@ body.is-ready footer{
   .navbar-header {
     display: flex;
     align-items: center;
-
     height: 100%;
   }
 
@@ -749,16 +745,16 @@ body.is-ready footer{
   box-shadow: 0 12px 30px rgba(0,0,0,.12);
 }
 
-.header.scrolled .barraMenu ul .scroll:hover{
+.header .barraMenu ul .scroll:hover{
   background-color: rgba(0,0,0,.04);
 }
 
-.header.scrolled .barraMenu ul .scroll.activo{
+.header .barraMenu ul .scroll.activo{
   background-color: rgba(0,0,0,.04);
   border-bottom: 1px solid #333;
   padding: .5rem 0 ;
 }
-.header.scrolled .barraMenu ul li a{
+.header .barraMenu ul li a{
   padding-bottom:5px;
   padding-left: 3px;
   padding-right: 3px;
@@ -766,15 +762,15 @@ body.is-ready footer{
 }
 
 
-.header.scrolled .BotonPagarFactura{
+.header .BotonPagarFactura{
   color: #011337;
   border: 1px solid #333;
 }
-.header.scrolled .BotonPagarFactura a{
+.header .BotonPagarFactura a{
   color: #333;
 }
 
-.header.scrolled .BotonPagarFactura a:hover{
+.header .BotonPagarFactura a:hover{
   padding-bottom:5px;
   padding-left: 3px;
   padding-right: 3px;
@@ -788,10 +784,10 @@ body.is-ready footer{
   border-bottom-color: rgb(255, 255, 255);
 }
 
-.header.scrolled .barraMenu .dropdown-menu li a{
+.header .barraMenu .dropdown-menu li a{
   color: #ffffff;
 }
-.header.scrolled .navbar-nav .dropdown-menu{
+.header .navbar-nav .dropdown-menu{
   background: rgba(0,0,0,.94);
 }
 
@@ -816,7 +812,7 @@ body.is-ready footer{
     color 1s ease,
     background-color 1s ease;
 }
-.header.scrolled .dropdown-toggle {
+.header .dropdown-toggle {
   color: #333;
 }
 .dropdown-toggle i {
@@ -854,13 +850,10 @@ body.is-ready footer{
   overflow: hidden;
 }
 
-.planes-promo__bg{
-  position:absolute;
-  inset:0;  
-  z-index:0;
-}
-
 .planes-promo__img{
+  position:absolute;
+  inset: 20px;  
+  z-index:0;
   width:100%;
   height:100%;
   object-fit: cover;
@@ -868,15 +861,6 @@ body.is-ready footer{
   filter: saturate(1.05) contrast(1.05);
 }
 
-.planes-promo__overlay{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(900px 420px at 25% 25%, rgba(33, 86, 193, 0.3), transparent 55%),
-    radial-gradient(900px 420px at 70% 40%, rgba(59,42,134,.40), transparent 60%),
-    linear-gradient(135deg, rgba(2,31,89,.70), rgba(15,23,42,.60));
-  backdrop-filter: blur(2px);
-}
 
 .planes-promo__container{
   position: relative;
@@ -2026,9 +2010,6 @@ html, body{ overflow-x: hidden; }
   border-radius: 2px;
   transition: .2s ease;
 }
-.header.is-scrolled .nav-toggle i{
-  color: #333;
-}
 .nav-toggle span:nth-child(1){ top: 14px; }
 .nav-toggle span:nth-child(2){ top: 21px; }
 .nav-toggle span:nth-child(3){ top: 28px; }
@@ -2118,7 +2099,8 @@ html, body{ overflow-x: hidden; }
 @media (max-width: 980px){
   .planes-promo{
     padding: 7.5rem 16px 40px;
-    min-height: auto;
+    min-height: 260px;
+    width: 100%;
   }
   .planes-promo__container{
     grid-template-columns: 1fr;
@@ -2339,7 +2321,7 @@ html, body{ overflow-x: hidden; }
 }
 
 .header.is-scrolled{
-  background: rgba(162, 162, 162, 0.88);
+  background: rgb(162, 162, 162);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255,255,255,.10);
   box-shadow: 0 14px 40px rgba(0,0,0,.25);

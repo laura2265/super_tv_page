@@ -92,8 +92,8 @@ function Header() {
             <img
               className="logito2"
               alt="Super TV"
-              src={logoSuper}
-              data-logo-top={logoSuper}
+              src={logoSuper2}
+              data-logo-top={logoSuper2}
               data-logo-scroll={logoSuper2}
             />
           </Link>

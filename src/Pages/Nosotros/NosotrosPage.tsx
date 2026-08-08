@@ -10,23 +10,11 @@ function NosotrosPage() {
             <div className="about-hero__glow"></div>
         
             <div className="container about-hero__content">
-              <div className="pill">
-                <span className="pill__icon">⚡</span>
-                <span>Nuestra empresa</span>
-              </div>
-
               <h1 className="about-hero__title">
-                Nuestra <span>Historia</span>
+                Nosotros 
               </h1>
 
-              <p className="about-hero__subtitle">
-                Desde 2010 conectamos hogares con internet estable y tecnología real.
-              </p>
 
-              <div className="about-hero__cta">
-                <a className="btn btn--primary" href="#historia">Ver historia</a>
-                <a className="btn planes-promo__btn--primary" href="#mision-vision">Misión y Visión</a>
-              </div>
 
               <div className="about-hero__stats">
                 <div className="stat">
@@ -48,79 +36,7 @@ function NosotrosPage() {
               </div>
             </div>
           </header>
-        
-          <section className="about-section" id="historia">
-            <div className="container">
-              <div className="section-head">
-                <h2>Cómo hemos crecido</h2>
-                <p>Un recorrido rápido y claro por los momentos más importantes.</p>
-              </div>
 
-              <div className="timeline">
-                <div className="timeline__line"></div>
-
-                <article className="t-item reveal" data-side="left">
-                  <div className="t-dot">
-                    <span className="t-year">2010</span>
-                  </div>
-                  <div className="t-card">
-                    <div className="t-card__icon">🏁</div>
-                    <h3>Fundación</h3>
-                    <p>Nace <strong>Super TV Electronic</strong> con el propósito de conectar hogares con un servicio estable y cercano.</p>
-                    <div className="t-card__meta">Enfoque: comunidad + soporte</div>
-                  </div>
-                </article>
-
-                <article className="t-item reveal" data-side="right">
-                  <div className="t-dot">
-                    <span className="t-year">2014</span>
-                  </div>
-                  <div className="t-card">
-                    <div className="t-card__icon">📍</div>
-                    <h3>Expansión</h3>
-                    <p>Extendemos la cobertura a nuevos barrios, fortaleciendo la red y llegando a más familias.</p>
-                    <div className="t-card__meta">Hito: más zonas conectadas</div>
-                  </div>
-                </article>
-
-                <article className="t-item reveal" data-side="left">
-                  <div className="t-dot">
-                    <span className="t-year">2018</span>
-                  </div>
-                  <div className="t-card">
-                    <div className="t-card__icon">🧵</div>
-                    <h3>Fibra óptica</h3>
-                    <p>Modernizamos infraestructura para ofrecer <strong>mayor velocidad</strong>, menor latencia y más estabilidad.</p>
-                    <div className="t-card__meta">Upgrade: tecnología + rendimiento</div>
-                  </div>
-                </article>
-
-                <article className="t-item reveal" data-side="right">
-                  <div className="t-dot">
-                    <span className="t-year">2022</span>
-                  </div>
-                  <div className="t-card">
-                    <div className="t-card__icon">📶</div>
-                    <h3>Nuevos planes</h3>
-                    <p>Ampliamos capacidad y lanzamos nuevas opciones para diferentes necesidades del hogar.</p>
-                    <div className="t-card__meta">Mejoras: planes + cobertura</div>
-                  </div>
-                </article>
-
-                <article className="t-item reveal" data-side="left">
-                  <div className="t-dot">
-                    <span className="t-year">2025</span>
-                  </div>
-                  <div className="t-card">
-                    <div className="t-card__icon">🚀</div>
-                    <h3>Hasta 900Mbps</h3>
-                    <p>Llevamos internet de alta velocidad para streaming, trabajo remoto y gaming, con mejor experiencia.</p>
-                    <div className="t-card__meta">Tope: 900Mbps en hogares</div>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </section>
         
           <section className="about-section about-section--soft" id="mision-vision">
             <div className="container">
